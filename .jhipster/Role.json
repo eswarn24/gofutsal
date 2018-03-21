@@ -1,0 +1,16 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "role",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20180321040351",
+    "dto": "no",
+    "service": "serviceClass",
+    "entityTableName": "role",
+    "jpaMetamodelFiltering": false,
+    "pagination": "no"
+}

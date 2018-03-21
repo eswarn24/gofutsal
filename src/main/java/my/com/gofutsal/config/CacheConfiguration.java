@@ -46,6 +46,7 @@ public class CacheConfiguration {
             cm.createCache(my.com.gofutsal.domain.Authority.class.getName(), jcacheConfiguration);
             cm.createCache(my.com.gofutsal.domain.User.class.getName() + ".authorities", jcacheConfiguration);
             cm.createCache(my.com.gofutsal.domain.SocialUserConnection.class.getName(), jcacheConfiguration);
+            cm.createCache(my.com.gofutsal.domain.Role.class.getName(), jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }
