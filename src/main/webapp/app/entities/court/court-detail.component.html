@@ -1,0 +1,42 @@
+
+<div *ngIf="court">
+    <h2><span>Court</span> {{court.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span>Name</span></dt>
+        <dd>
+            <span>{{court.name}}</span>
+        </dd>
+        <dt><span>Rate</span></dt>
+        <dd>
+            <span>{{court.rate}}</span>
+        </dd>
+        <dt><span>Court Location</span></dt>
+        <dd>
+            <div *ngIf="court.courtLocation">
+                <a [routerLink]="['/court-location', court.courtLocation?.id]">{{court.courtLocation?.region}}</a>
+            </div>
+        </dd>
+        <dt><span>Court Type</span></dt>
+        <dd>
+            <div *ngIf="court.courtType">
+                <a [routerLink]="['/court-type', court.courtType?.id]">{{court.courtType?.type}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'court/'+ court.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span> Edit</span>
+    </button>
+</div>

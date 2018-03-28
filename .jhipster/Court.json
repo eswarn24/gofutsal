@@ -1,0 +1,43 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "courtLocation",
+            "otherEntityName": "courtLocation",
+            "relationshipType": "one-to-one",
+            "otherEntityField": "region",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "court"
+        },
+        {
+            "relationshipName": "courtType",
+            "otherEntityName": "courtType",
+            "relationshipType": "one-to-one",
+            "otherEntityField": "type",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "court"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "rate",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20180325104357",
+    "dto": "no",
+    "service": "serviceClass",
+    "entityTableName": "court",
+    "jpaMetamodelFiltering": false,
+    "pagination": "pagination"
+}

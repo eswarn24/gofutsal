@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity Court.
+    -->
+    <changeSet id="20180325104357-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="court_location_id"
+                                 baseTableName="court"
+                                 constraintName="fk_court_court_location_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="court_location"/>
+
+        <addForeignKeyConstraint baseColumnNames="court_type_id"
+                                 baseTableName="court"
+                                 constraintName="fk_court_court_type_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="court_type"/>
+
+    </changeSet>
+</databaseChangeLog>
