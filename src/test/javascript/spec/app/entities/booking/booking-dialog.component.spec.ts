@@ -9,6 +9,7 @@ import { GofutsalTestModule } from '../../../test.module';
 import { BookingDialogComponent } from '../../../../../../main/webapp/app/entities/booking/booking-dialog.component';
 import { BookingService } from '../../../../../../main/webapp/app/entities/booking/booking.service';
 import { Booking } from '../../../../../../main/webapp/app/entities/booking/booking.model';
+import { CourtService } from '../../../../../../main/webapp/app/entities/court';
 
 describe('Component Tests', () => {
 
@@ -24,6 +25,7 @@ describe('Component Tests', () => {
                 imports: [GofutsalTestModule],
                 declarations: [BookingDialogComponent],
                 providers: [
+                    CourtService,
                     BookingService
                 ]
             })

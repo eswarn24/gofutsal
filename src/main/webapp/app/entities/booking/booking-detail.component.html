@@ -16,6 +16,12 @@
         <dd>
             <span>{{booking.endTime | date:'medium'}}</span>
         </dd>
+        <dt><span>Court</span></dt>
+        <dd>
+            <div *ngIf="booking.court">
+                <a [routerLink]="['/court', booking.court?.id]">{{booking.court?.name}}</a>
+            </div>
+        </dd>
     </dl>
 
     <button type="submit"

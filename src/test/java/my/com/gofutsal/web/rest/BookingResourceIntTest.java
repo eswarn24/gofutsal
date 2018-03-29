@@ -3,6 +3,7 @@ package my.com.gofutsal.web.rest;
 import my.com.gofutsal.GofutsalApp;
 
 import my.com.gofutsal.domain.Booking;
+import my.com.gofutsal.domain.Court;
 import my.com.gofutsal.repository.BookingRepository;
 import my.com.gofutsal.service.BookingService;
 import my.com.gofutsal.repository.search.BookingSearchRepository;
@@ -105,6 +106,11 @@ public class BookingResourceIntTest {
             .date(DEFAULT_DATE)
             .startTime(DEFAULT_START_TIME)
             .endTime(DEFAULT_END_TIME);
+        // Add required entity
+        Court court = CourtResourceIntTest.createEntity(em);
+        em.persist(court);
+        em.flush();
+        booking.setCourt(court);
         return booking;
     }
 
@@ -386,6 +392,25 @@ public class BookingResourceIntTest {
         // Get all the bookingList where endTime is null
         defaultBookingShouldNotBeFound("endTime.specified=false");
     }
+
+    @Test
+    @Transactional
+    public void getAllBookingsByCourtIsEqualToSomething() throws Exception {
+        // Initialize the database
+        Court court = CourtResourceIntTest.createEntity(em);
+        em.persist(court);
+        em.flush();
+        booking.setCourt(court);
+        bookingRepository.saveAndFlush(booking);
+        Long courtId = court.getId();
+
+        // Get all the bookingList where court equals to courtId
+        defaultBookingShouldBeFound("courtId.equals=" + courtId);
+
+        // Get all the bookingList where court equals to courtId + 1
+        defaultBookingShouldNotBeFound("courtId.equals=" + (courtId + 1));
+    }
+
     /**
      * Executes the search, and checks that the default entity is returned
      */

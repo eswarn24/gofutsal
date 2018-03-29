@@ -1,6 +1,18 @@
 {
     "fluentMethods": true,
-    "relationships": [],
+    "relationships": [
+        {
+            "relationshipName": "court",
+            "otherEntityName": "court",
+            "relationshipType": "one-to-one",
+            "relationshipValidateRules": [
+                "required"
+            ],
+            "otherEntityField": "name",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "booking"
+        }
+    ],
     "fields": [
         {
             "fieldName": "date",

@@ -39,6 +39,11 @@ public class Booking implements Serializable {
     @Column(name = "end_time", nullable = false)
     private Instant endTime;
 
+    @OneToOne(optional = false)
+    @NotNull
+    @JoinColumn(unique = true)
+    private Court court;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -85,6 +90,19 @@ public class Booking implements Serializable {
 
     public void setEndTime(Instant endTime) {
         this.endTime = endTime;
+    }
+
+    public Court getCourt() {
+        return court;
+    }
+
+    public Booking court(Court court) {
+        this.court = court;
+        return this;
+    }
+
+    public void setCourt(Court court) {
+        this.court = court;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

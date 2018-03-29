@@ -63,6 +63,19 @@
             </div>
         </div>
 
+        <div class="form-group">
+            <label class="form-control-label" for="field_court">Court</label>
+            <select class="form-control" id="field_court" name="court" [(ngModel)]="booking.court" required>
+                <option *ngIf="!editForm.value.court" [ngValue]="null" selected></option>
+                <option [ngValue]="courtOption.id === booking.court?.id ? booking.court : courtOption" *ngFor="let courtOption of courts; trackBy: trackCourtById">{{courtOption.name}}</option>
+            </select>
+        </div>
+        <div [hidden]="!(editForm.controls.court?.dirty && editForm.controls.court?.invalid)">
+            <small class="form-text text-danger"
+                [hidden]="!editForm.controls.court?.errors?.required">
+                This field is required.
+            </small>
+        </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">

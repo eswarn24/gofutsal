@@ -1,0 +1,22 @@
+{
+  "name": "gofutsal",
+  "description": "Description for gofutsal",
+  "main": "",
+  "authors": [
+    "Eswar Babu <eswarn24@gmail.com>"
+  ],
+  "license": "UNLICENSED",
+  "homepage": "https://github.com/eswarn24/gofutsal",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap-material-design": "0.5.10",
+    "arrive": "2.3.0"
+  }
+}

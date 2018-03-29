@@ -33,7 +33,9 @@
             <column name="end_time" type="timestamp">
                 <constraints nullable="false" />
             </column>
-
+            <column name="court_id" type="bigint">
+                <constraints unique="true" nullable="false" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         <dropDefaultValue tableName="booking" columnName="start_time" columnDataType="datetime"/>

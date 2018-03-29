@@ -4,11 +4,12 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager } from 'ng-jhipster';
+import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
 import { Booking } from './booking.model';
 import { BookingPopupService } from './booking-popup.service';
 import { BookingService } from './booking.service';
+import { Court, CourtService } from '../court';
 
 @Component({
     selector: 'jhi-booking-dialog',
@@ -18,17 +19,34 @@ export class BookingDialogComponent implements OnInit {
 
     booking: Booking;
     isSaving: boolean;
+
+    courts: Court[];
     dateDp: any;
 
     constructor(
         public activeModal: NgbActiveModal,
+        private jhiAlertService: JhiAlertService,
         private bookingService: BookingService,
+        private courtService: CourtService,
         private eventManager: JhiEventManager
     ) {
     }
 
     ngOnInit() {
         this.isSaving = false;
+        this.courtService
+            .query({filter: 'booking-is-null'})
+            .subscribe((res: HttpResponse<Court[]>) => {
+                if (!this.booking.court || !this.booking.court.id) {
+                    this.courts = res.body;
+                } else {
+                    this.courtService
+                        .find(this.booking.court.id)
+                        .subscribe((subRes: HttpResponse<Court>) => {
+                            this.courts = [subRes.body].concat(res.body);
+                        }, (subRes: HttpErrorResponse) => this.onError(subRes.message));
+                }
+            }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     clear() {
@@ -59,6 +77,14 @@ export class BookingDialogComponent implements OnInit {
 
     private onSaveError() {
         this.isSaving = false;
+    }
+
+    private onError(error: any) {
+        this.jhiAlertService.error(error.message, null, null);
+    }
+
+    trackCourtById(index: number, item: Court) {
+        return item.id;
     }
 }
 
