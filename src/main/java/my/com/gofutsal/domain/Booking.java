@@ -44,6 +44,10 @@ public class Booking implements Serializable {
     @JoinColumn(unique = true)
     private Court court;
 
+    @OneToOne
+    @JoinColumn(unique = true)
+    private BookingStatus bookingStatus;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -103,6 +107,19 @@ public class Booking implements Serializable {
 
     public void setCourt(Court court) {
         this.court = court;
+    }
+
+    public BookingStatus getBookingStatus() {
+        return bookingStatus;
+    }
+
+    public Booking bookingStatus(BookingStatus bookingStatus) {
+        this.bookingStatus = bookingStatus;
+        return this;
+    }
+
+    public void setBookingStatus(BookingStatus bookingStatus) {
+        this.bookingStatus = bookingStatus;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

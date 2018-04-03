@@ -6,39 +6,35 @@ import { Observable } from 'rxjs/Observable';
 import { JhiEventManager } from 'ng-jhipster';
 
 import { GofutsalTestModule } from '../../../test.module';
-import { BookingDialogComponent } from '../../../../../../main/webapp/app/entities/booking/booking-dialog.component';
-import { BookingService } from '../../../../../../main/webapp/app/entities/booking/booking.service';
-import { Booking } from '../../../../../../main/webapp/app/entities/booking/booking.model';
-import { CourtService } from '../../../../../../main/webapp/app/entities/court';
-import { BookingStatusService } from '../../../../../../main/webapp/app/entities/booking-status';
+import { BookingStatusDialogComponent } from '../../../../../../main/webapp/app/entities/booking-status/booking-status-dialog.component';
+import { BookingStatusService } from '../../../../../../main/webapp/app/entities/booking-status/booking-status.service';
+import { BookingStatus } from '../../../../../../main/webapp/app/entities/booking-status/booking-status.model';
 
 describe('Component Tests', () => {
 
-    describe('Booking Management Dialog Component', () => {
-        let comp: BookingDialogComponent;
-        let fixture: ComponentFixture<BookingDialogComponent>;
-        let service: BookingService;
+    describe('BookingStatus Management Dialog Component', () => {
+        let comp: BookingStatusDialogComponent;
+        let fixture: ComponentFixture<BookingStatusDialogComponent>;
+        let service: BookingStatusService;
         let mockEventManager: any;
         let mockActiveModal: any;
 
         beforeEach(async(() => {
             TestBed.configureTestingModule({
                 imports: [GofutsalTestModule],
-                declarations: [BookingDialogComponent],
+                declarations: [BookingStatusDialogComponent],
                 providers: [
-                    CourtService,
-                    BookingStatusService,
-                    BookingService
+                    BookingStatusService
                 ]
             })
-            .overrideTemplate(BookingDialogComponent, '')
+            .overrideTemplate(BookingStatusDialogComponent, '')
             .compileComponents();
         }));
 
         beforeEach(() => {
-            fixture = TestBed.createComponent(BookingDialogComponent);
+            fixture = TestBed.createComponent(BookingStatusDialogComponent);
             comp = fixture.componentInstance;
-            service = fixture.debugElement.injector.get(BookingService);
+            service = fixture.debugElement.injector.get(BookingStatusService);
             mockEventManager = fixture.debugElement.injector.get(JhiEventManager);
             mockActiveModal = fixture.debugElement.injector.get(NgbActiveModal);
         });
@@ -48,9 +44,9 @@ describe('Component Tests', () => {
                 inject([],
                     fakeAsync(() => {
                         // GIVEN
-                        const entity = new Booking(123);
+                        const entity = new BookingStatus(123);
                         spyOn(service, 'update').and.returnValue(Observable.of(new HttpResponse({body: entity})));
-                        comp.booking = entity;
+                        comp.bookingStatus = entity;
                         // WHEN
                         comp.save();
                         tick(); // simulate async
@@ -58,7 +54,7 @@ describe('Component Tests', () => {
                         // THEN
                         expect(service.update).toHaveBeenCalledWith(entity);
                         expect(comp.isSaving).toEqual(false);
-                        expect(mockEventManager.broadcastSpy).toHaveBeenCalledWith({ name: 'bookingListModification', content: 'OK'});
+                        expect(mockEventManager.broadcastSpy).toHaveBeenCalledWith({ name: 'bookingStatusListModification', content: 'OK'});
                         expect(mockActiveModal.dismissSpy).toHaveBeenCalled();
                     })
                 )
@@ -68,9 +64,9 @@ describe('Component Tests', () => {
                 inject([],
                     fakeAsync(() => {
                         // GIVEN
-                        const entity = new Booking();
+                        const entity = new BookingStatus();
                         spyOn(service, 'create').and.returnValue(Observable.of(new HttpResponse({body: entity})));
-                        comp.booking = entity;
+                        comp.bookingStatus = entity;
                         // WHEN
                         comp.save();
                         tick(); // simulate async
@@ -78,7 +74,7 @@ describe('Component Tests', () => {
                         // THEN
                         expect(service.create).toHaveBeenCalledWith(entity);
                         expect(comp.isSaving).toEqual(false);
-                        expect(mockEventManager.broadcastSpy).toHaveBeenCalledWith({ name: 'bookingListModification', content: 'OK'});
+                        expect(mockEventManager.broadcastSpy).toHaveBeenCalledWith({ name: 'bookingStatusListModification', content: 'OK'});
                         expect(mockActiveModal.dismissSpy).toHaveBeenCalled();
                     })
                 )

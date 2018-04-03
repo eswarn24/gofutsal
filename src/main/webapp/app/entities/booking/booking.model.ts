@@ -7,6 +7,7 @@ export class Booking implements BaseEntity {
         public startTime?: any,
         public endTime?: any,
         public court?: BaseEntity,
+        public bookingStatus?: BaseEntity,
     ) {
     }
 }

@@ -14,5 +14,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="court"/>
 
+        <addForeignKeyConstraint baseColumnNames="booking_status_id"
+                                 baseTableName="booking"
+                                 constraintName="fk_booking_booking_status_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="booking_status"/>
+
     </changeSet>
 </databaseChangeLog>

@@ -1,0 +1,19 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "status",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20180403030818",
+    "dto": "no",
+    "service": "serviceClass",
+    "entityTableName": "booking_status",
+    "jpaMetamodelFiltering": false,
+    "pagination": "no"
+}

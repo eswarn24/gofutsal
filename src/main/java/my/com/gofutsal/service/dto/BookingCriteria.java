@@ -36,6 +36,8 @@ public class BookingCriteria implements Serializable {
 
     private LongFilter courtId;
 
+    private LongFilter bookingStatusId;
+
     public BookingCriteria() {
     }
 
@@ -79,6 +81,14 @@ public class BookingCriteria implements Serializable {
         this.courtId = courtId;
     }
 
+    public LongFilter getBookingStatusId() {
+        return bookingStatusId;
+    }
+
+    public void setBookingStatusId(LongFilter bookingStatusId) {
+        this.bookingStatusId = bookingStatusId;
+    }
+
     @Override
     public String toString() {
         return "BookingCriteria{" +
@@ -87,6 +97,7 @@ public class BookingCriteria implements Serializable {
                 (startTime != null ? "startTime=" + startTime + ", " : "") +
                 (endTime != null ? "endTime=" + endTime + ", " : "") +
                 (courtId != null ? "courtId=" + courtId + ", " : "") +
+                (bookingStatusId != null ? "bookingStatusId=" + bookingStatusId + ", " : "") +
             "}";
     }
 

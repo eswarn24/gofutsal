@@ -10,6 +10,7 @@ import { Booking } from './booking.model';
 import { BookingPopupService } from './booking-popup.service';
 import { BookingService } from './booking.service';
 import { Court, CourtService } from '../court';
+import { BookingStatus, BookingStatusService } from '../booking-status';
 
 @Component({
     selector: 'jhi-booking-dialog',
@@ -21,6 +22,8 @@ export class BookingDialogComponent implements OnInit {
     isSaving: boolean;
 
     courts: Court[];
+
+    bookingstatuses: BookingStatus[];
     dateDp: any;
 
     constructor(
@@ -28,6 +31,7 @@ export class BookingDialogComponent implements OnInit {
         private jhiAlertService: JhiAlertService,
         private bookingService: BookingService,
         private courtService: CourtService,
+        private bookingStatusService: BookingStatusService,
         private eventManager: JhiEventManager
     ) {
     }
@@ -44,6 +48,19 @@ export class BookingDialogComponent implements OnInit {
                         .find(this.booking.court.id)
                         .subscribe((subRes: HttpResponse<Court>) => {
                             this.courts = [subRes.body].concat(res.body);
+                        }, (subRes: HttpErrorResponse) => this.onError(subRes.message));
+                }
+            }, (res: HttpErrorResponse) => this.onError(res.message));
+        this.bookingStatusService
+            .query({filter: 'booking-is-null'})
+            .subscribe((res: HttpResponse<BookingStatus[]>) => {
+                if (!this.booking.bookingStatus || !this.booking.bookingStatus.id) {
+                    this.bookingstatuses = res.body;
+                } else {
+                    this.bookingStatusService
+                        .find(this.booking.bookingStatus.id)
+                        .subscribe((subRes: HttpResponse<BookingStatus>) => {
+                            this.bookingstatuses = [subRes.body].concat(res.body);
                         }, (subRes: HttpErrorResponse) => this.onError(subRes.message));
                 }
             }, (res: HttpErrorResponse) => this.onError(res.message));
@@ -84,6 +101,10 @@ export class BookingDialogComponent implements OnInit {
     }
 
     trackCourtById(index: number, item: Court) {
+        return item.id;
+    }
+
+    trackBookingStatusById(index: number, item: BookingStatus) {
         return item.id;
     }
 }

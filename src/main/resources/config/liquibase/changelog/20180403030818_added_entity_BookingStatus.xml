@@ -15,33 +15,19 @@
     <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
 
     <!--
-        Added the entity Booking.
+        Added the entity BookingStatus.
     -->
-    <changeSet id="20180328020448-1" author="jhipster">
-        <createTable tableName="booking">
+    <changeSet id="20180403030818-1" author="jhipster">
+        <createTable tableName="booking_status">
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="jhi_date" type="date">
+            <column name="status" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
 
-            <column name="start_time" type="timestamp">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="end_time" type="timestamp">
-                <constraints nullable="false" />
-            </column>
-            <column name="court_id" type="bigint">
-                <constraints unique="true" nullable="false" />
-            </column>            <column name="booking_status_id" type="bigint">
-                <constraints unique="true" nullable="true" />
-            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        <dropDefaultValue tableName="booking" columnName="start_time" columnDataType="datetime"/>
-        <dropDefaultValue tableName="booking" columnName="end_time" columnDataType="datetime"/>
         
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->

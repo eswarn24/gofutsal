@@ -76,6 +76,13 @@
                 This field is required.
             </small>
         </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_bookingStatus">Booking Status</label>
+            <select class="form-control" id="field_bookingStatus" name="bookingStatus" [(ngModel)]="booking.bookingStatus">
+                <option [ngValue]="null"></option>
+                <option [ngValue]="bookingStatusOption.id === booking.bookingStatus?.id ? booking.bookingStatus : bookingStatusOption" *ngFor="let bookingStatusOption of bookingstatuses; trackBy: trackBookingStatusById">{{bookingStatusOption.status}}</option>
+            </select>
+        </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">

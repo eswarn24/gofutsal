@@ -22,6 +22,12 @@
                 <a [routerLink]="['/court', booking.court?.id]">{{booking.court?.name}}</a>
             </div>
         </dd>
+        <dt><span>Booking Status</span></dt>
+        <dd>
+            <div *ngIf="booking.bookingStatus">
+                <a [routerLink]="['/booking-status', booking.bookingStatus?.id]">{{booking.bookingStatus?.status}}</a>
+            </div>
+        </dd>
     </dl>
 
     <button type="submit"

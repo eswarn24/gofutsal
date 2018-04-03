@@ -4,6 +4,7 @@ import my.com.gofutsal.GofutsalApp;
 
 import my.com.gofutsal.domain.Booking;
 import my.com.gofutsal.domain.Court;
+import my.com.gofutsal.domain.BookingStatus;
 import my.com.gofutsal.repository.BookingRepository;
 import my.com.gofutsal.service.BookingService;
 import my.com.gofutsal.repository.search.BookingSearchRepository;
@@ -409,6 +410,25 @@ public class BookingResourceIntTest {
 
         // Get all the bookingList where court equals to courtId + 1
         defaultBookingShouldNotBeFound("courtId.equals=" + (courtId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllBookingsByBookingStatusIsEqualToSomething() throws Exception {
+        // Initialize the database
+        BookingStatus bookingStatus = BookingStatusResourceIntTest.createEntity(em);
+        em.persist(bookingStatus);
+        em.flush();
+        booking.setBookingStatus(bookingStatus);
+        bookingRepository.saveAndFlush(booking);
+        Long bookingStatusId = bookingStatus.getId();
+
+        // Get all the bookingList where bookingStatus equals to bookingStatusId
+        defaultBookingShouldBeFound("bookingStatusId.equals=" + bookingStatusId);
+
+        // Get all the bookingList where bookingStatus equals to bookingStatusId + 1
+        defaultBookingShouldNotBeFound("bookingStatusId.equals=" + (bookingStatusId + 1));
     }
 
     /**

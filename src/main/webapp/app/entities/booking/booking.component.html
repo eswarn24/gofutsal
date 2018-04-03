@@ -34,6 +34,7 @@
             <th jhiSortBy="startTime"><span>Start Time</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="endTime"><span>End Time</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="court.name"><span>Court</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="bookingStatus.status"><span>Booking Status</span> <span class="fa fa-sort"></span></th>
             <th></th>
             </tr>
             </thead>
@@ -46,6 +47,11 @@
                 <td>
                     <div *ngIf="booking.court">
                         <a [routerLink]="['../court', booking.court?.id ]" >{{booking.court?.name}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="booking.bookingStatus">
+                        <a [routerLink]="['../booking-status', booking.bookingStatus?.id ]" >{{booking.bookingStatus?.status}}</a>
                     </div>
                 </td>
                 <td class="text-right">

@@ -10,6 +10,7 @@
     <include file="config/liquibase/changelog/20180325102441_added_entity_CourtLocation.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180325104357_added_entity_Court.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180328020448_added_entity_Booking.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180403030818_added_entity_BookingStatus.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20180321040351_added_entity_constraints_Role.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180325104357_added_entity_constraints_Court.xml" relativeToChangelogFile="false"/>

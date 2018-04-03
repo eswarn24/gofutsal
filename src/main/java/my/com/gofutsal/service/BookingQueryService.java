@@ -88,6 +88,9 @@ public class BookingQueryService extends QueryService<Booking> {
             if (criteria.getCourtId() != null) {
                 specification = specification.and(buildReferringEntitySpecification(criteria.getCourtId(), Booking_.court, Court_.id));
             }
+            if (criteria.getBookingStatusId() != null) {
+                specification = specification.and(buildReferringEntitySpecification(criteria.getBookingStatusId(), Booking_.bookingStatus, BookingStatus_.id));
+            }
         }
         return specification;
     }
