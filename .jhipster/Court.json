@@ -16,6 +16,14 @@
             "otherEntityField": "type",
             "ownerSide": true,
             "otherEntityRelationshipName": "court"
+        },
+        {
+            "relationshipName": "user",
+            "otherEntityName": "user",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "login",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "court"
         }
     ],
     "fields": [

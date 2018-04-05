@@ -11,6 +11,7 @@ import { CourtService } from '../../../../../../main/webapp/app/entities/court/c
 import { Court } from '../../../../../../main/webapp/app/entities/court/court.model';
 import { CourtLocationService } from '../../../../../../main/webapp/app/entities/court-location';
 import { CourtTypeService } from '../../../../../../main/webapp/app/entities/court-type';
+import { UserService } from '../../../../../../main/webapp/app/shared';
 
 describe('Component Tests', () => {
 
@@ -28,6 +29,7 @@ describe('Component Tests', () => {
                 providers: [
                     CourtLocationService,
                     CourtTypeService,
+                    UserService,
                     CourtService
                 ]
             })

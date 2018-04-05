@@ -11,6 +11,7 @@ import { CourtPopupService } from './court-popup.service';
 import { CourtService } from './court.service';
 import { CourtLocation, CourtLocationService } from '../court-location';
 import { CourtType, CourtTypeService } from '../court-type';
+import { User, UserService } from '../../shared';
 
 @Component({
     selector: 'jhi-court-dialog',
@@ -25,12 +26,15 @@ export class CourtDialogComponent implements OnInit {
 
     courttypes: CourtType[];
 
+    users: User[];
+
     constructor(
         public activeModal: NgbActiveModal,
         private jhiAlertService: JhiAlertService,
         private courtService: CourtService,
         private courtLocationService: CourtLocationService,
         private courtTypeService: CourtTypeService,
+        private userService: UserService,
         private eventManager: JhiEventManager
     ) {
     }
@@ -63,6 +67,8 @@ export class CourtDialogComponent implements OnInit {
                         }, (subRes: HttpErrorResponse) => this.onError(subRes.message));
                 }
             }, (res: HttpErrorResponse) => this.onError(res.message));
+        this.userService.query()
+            .subscribe((res: HttpResponse<User[]>) => { this.users = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     clear() {
@@ -104,6 +110,10 @@ export class CourtDialogComponent implements OnInit {
     }
 
     trackCourtTypeById(index: number, item: CourtType) {
+        return item.id;
+    }
+
+    trackUserById(index: number, item: User) {
         return item.id;
     }
 }

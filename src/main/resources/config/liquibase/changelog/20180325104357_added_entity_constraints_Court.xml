@@ -20,5 +20,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="court_type"/>
 
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="court"
+                                 constraintName="fk_court_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="jhi_user"/>
+
     </changeSet>
 </databaseChangeLog>

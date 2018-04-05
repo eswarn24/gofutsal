@@ -49,6 +49,13 @@
                 <option [ngValue]="courtTypeOption.id === court.courtType?.id ? court.courtType : courtTypeOption" *ngFor="let courtTypeOption of courttypes; trackBy: trackCourtTypeById">{{courtTypeOption.type}}</option>
             </select>
         </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_user">User</label>
+            <select class="form-control" id="field_user" name="user" [(ngModel)]="court.user" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="userOption.id === court.user?.id ? court.user : userOption" *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.login}}</option>
+            </select>
+        </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">

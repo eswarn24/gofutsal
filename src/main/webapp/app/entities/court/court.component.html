@@ -34,6 +34,7 @@
             <th jhiSortBy="rate"><span>Rate</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="courtLocation.region"><span>Court Location</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="courtType.type"><span>Court Type</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="user.login"><span>User</span> <span class="fa fa-sort"></span></th>
             <th></th>
             </tr>
             </thead>
@@ -51,6 +52,9 @@
                     <div *ngIf="court.courtType">
                         <a [routerLink]="['../court-type', court.courtType?.id ]" >{{court.courtType?.type}}</a>
                     </div>
+                </td>
+                <td>
+                    {{court.user?.login}}
                 </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">

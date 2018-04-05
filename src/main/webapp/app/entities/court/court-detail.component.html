@@ -24,6 +24,10 @@
                 <a [routerLink]="['/court-type', court.courtType?.id]">{{court.courtType?.type}}</a>
             </div>
         </dd>
+        <dt><span>User</span></dt>
+        <dd>
+            {{court.user?.login}}
+        </dd>
     </dl>
 
     <button type="submit"
