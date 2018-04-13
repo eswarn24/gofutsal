@@ -29,6 +29,10 @@
             <column name="rate" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
+
+            <column name="court" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
             <column name="court_location_id" type="bigint">
                 <constraints unique="true" nullable="true" />
             </column>            <column name="court_type_id" type="bigint">

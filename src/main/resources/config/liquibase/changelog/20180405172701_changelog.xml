@@ -1,0 +1,77 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="localadmin (generated)" id="1522949272849-1">
+        <createTable tableName="booking">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="bookingPK"/>
+            </column>
+            <column name="jhi_date" type="TINYBLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="end_time" type="TINYBLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="start_time" type="TINYBLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="booking_status_id" type="BIGINT"/>
+            <column name="court_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="localadmin (generated)" id="1522949272849-2">
+        <createTable tableName="court">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="courtPK"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rate" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="court_location_id" type="BIGINT"/>
+            <column name="court_type_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="localadmin (generated)" id="1522949272849-3">
+        <addUniqueConstraint columnNames="booking_status_id" constraintName="UC_BOOKINGBOOKING_STATUS_ID_COL" tableName="booking"/>
+    </changeSet>
+    <changeSet author="localadmin (generated)" id="1522949272849-4">
+        <addUniqueConstraint columnNames="court_location_id" constraintName="UC_COURTCOURT_LOCATION_ID_COL" tableName="court"/>
+    </changeSet>
+    <changeSet author="localadmin (generated)" id="1522949272849-5">
+        <addUniqueConstraint columnNames="court_type_id" constraintName="UC_COURTCOURT_TYPE_ID_COL" tableName="court"/>
+    </changeSet>
+    <changeSet author="localadmin (generated)" id="1522949272849-6">
+        <addUniqueConstraint columnNames="court_id" constraintName="UK_7wnc6qou4jtgsvsmm808m2h4g" tableName="booking"/>
+    </changeSet>
+    <changeSet author="localadmin (generated)" id="1522949272849-7">
+        <addForeignKeyConstraint baseColumnNames="court_id" baseTableName="booking" constraintName="FK8086mrvdgwdllb70v0cylusv2" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="court"/>
+    </changeSet>
+    <changeSet author="localadmin (generated)" id="1522949272849-8">
+        <addForeignKeyConstraint baseColumnNames="court_location_id" baseTableName="court" constraintName="FKg5otg6mi8ai7ur74mlfjm6g0i" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="court_location"/>
+    </changeSet>
+    <changeSet author="localadmin (generated)" id="1522949272849-9">
+        <addForeignKeyConstraint baseColumnNames="booking_status_id" baseTableName="booking" constraintName="FKm3d0q9s1hos02eamx9wrsupaq" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="booking_status"/>
+    </changeSet>
+    <changeSet author="localadmin (generated)" id="1522949272849-10">
+        <addForeignKeyConstraint baseColumnNames="court_type_id" baseTableName="court" constraintName="FKsjutmbc66ina7f9vn04gk0w1u" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="court_type"/>
+    </changeSet>
+    <changeSet author="localadmin (generated)" id="1522949272849-11">
+        <dropForeignKeyConstraint baseTableName="extended_user" constraintName="fk_extended_user_user_id"/>
+    </changeSet>
+    <changeSet author="localadmin (generated)" id="1522949272849-12">
+        <dropUniqueConstraint constraintName="user_id" tableName="extended_user"/>
+    </changeSet>
+    <changeSet author="localadmin (generated)" id="1522949272849-13">
+        <dropUniqueConstraint constraintName="user_id" tableName="jhi_social_user_connection"/>
+    </changeSet>
+    <changeSet author="localadmin (generated)" id="1522949272849-14">
+        <dropUniqueConstraint constraintName="user_id_2" tableName="jhi_social_user_connection"/>
+    </changeSet>
+    <changeSet author="localadmin (generated)" id="1522949272849-15">
+        <dropTable tableName="extended_user"/>
+    </changeSet>
+</databaseChangeLog>

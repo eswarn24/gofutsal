@@ -1,12 +1,7 @@
 {
     "fluentMethods": true,
     "relationships": [],
-    "fields": [
-        {
-            "fieldName": "role",
-            "fieldType": "String"
-        }
-    ],
+    "fields": [],
     "changelogDate": "20180321040351",
     "dto": "no",
     "service": "serviceClass",

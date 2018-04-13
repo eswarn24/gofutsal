@@ -3,21 +3,7 @@
     "relationships": [],
     "fields": [
         {
-            "fieldName": "region",
-            "fieldType": "String",
-            "fieldValidateRules": [
-                "required"
-            ]
-        },
-        {
             "fieldName": "address",
-            "fieldType": "String",
-            "fieldValidateRules": [
-                "required"
-            ]
-        },
-        {
-            "fieldName": "state",
             "fieldType": "String",
             "fieldValidateRules": [
                 "required"
@@ -29,6 +15,11 @@
             "fieldValidateRules": [
                 "required"
             ]
+        },
+        {
+            "fieldName": "state",
+            "fieldType": "State",
+            "fieldValues": "Johor,Kedah,Kelantan,Melaka,Negeri Sembilan,Pahang,Penang,Perak,Perlis,Sabah,Sarawak,Selangor,Terengganu,Kuala Lumpur,Labuan,Putrajaya"
         }
     ],
     "changelogDate": "20180325102441",

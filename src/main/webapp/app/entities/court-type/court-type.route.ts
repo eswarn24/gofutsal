@@ -11,7 +11,7 @@ export const courtTypeRoute: Routes = [
         path: 'court-type',
         component: CourtTypeComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'CourtTypes'
         },
         canActivate: [UserRouteAccessService]
@@ -19,7 +19,7 @@ export const courtTypeRoute: Routes = [
         path: 'court-type/:id',
         component: CourtTypeDetailComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'CourtTypes'
         },
         canActivate: [UserRouteAccessService]
@@ -31,7 +31,7 @@ export const courtTypePopupRoute: Routes = [
         path: 'court-type-new',
         component: CourtTypePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'CourtTypes'
         },
         canActivate: [UserRouteAccessService],
@@ -41,7 +41,7 @@ export const courtTypePopupRoute: Routes = [
         path: 'court-type/:id/edit',
         component: CourtTypePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'CourtTypes'
         },
         canActivate: [UserRouteAccessService],
@@ -51,7 +51,7 @@ export const courtTypePopupRoute: Routes = [
         path: 'court-type/:id/delete',
         component: CourtTypeDeletePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'CourtTypes'
         },
         canActivate: [UserRouteAccessService],

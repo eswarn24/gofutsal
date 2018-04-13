@@ -40,6 +40,11 @@
             "fieldValidateRules": [
                 "required"
             ]
+        },
+        {
+            "fieldName": "court",
+            "fieldType": "Region",
+            "fieldValues": "Petaling Jaya,Kelana Jaya,Putra Jaya,Kuala lumpur,Subang Jaya,Damansara,USJ,Puchong,Nilai,Bukit Bintang"
         }
     ],
     "changelogDate": "20180325104357",

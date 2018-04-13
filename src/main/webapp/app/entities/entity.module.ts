@@ -1,6 +1,5 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
-import { GofutsalRoleModule } from './role/role.module';
 import { GofutsalCourtTypeModule } from './court-type/court-type.module';
 import { GofutsalCourtLocationModule } from './court-location/court-location.module';
 import { GofutsalCourtModule } from './court/court.module';
@@ -11,7 +10,6 @@ import { GofutsalBookingStatusModule } from './booking-status/booking-status.mod
 
 @NgModule({
     imports: [
-        GofutsalRoleModule,
         GofutsalCourtTypeModule,
         GofutsalCourtLocationModule,
         GofutsalCourtModule,

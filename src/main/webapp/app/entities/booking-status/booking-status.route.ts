@@ -11,7 +11,7 @@ export const bookingStatusRoute: Routes = [
         path: 'booking-status',
         component: BookingStatusComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'BookingStatuses'
         },
         canActivate: [UserRouteAccessService]
@@ -19,7 +19,7 @@ export const bookingStatusRoute: Routes = [
         path: 'booking-status/:id',
         component: BookingStatusDetailComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'BookingStatuses'
         },
         canActivate: [UserRouteAccessService]
@@ -31,7 +31,7 @@ export const bookingStatusPopupRoute: Routes = [
         path: 'booking-status-new',
         component: BookingStatusPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'BookingStatuses'
         },
         canActivate: [UserRouteAccessService],
@@ -41,7 +41,7 @@ export const bookingStatusPopupRoute: Routes = [
         path: 'booking-status/:id/edit',
         component: BookingStatusPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'BookingStatuses'
         },
         canActivate: [UserRouteAccessService],
@@ -51,7 +51,7 @@ export const bookingStatusPopupRoute: Routes = [
         path: 'booking-status/:id/delete',
         component: BookingStatusDeletePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'BookingStatuses'
         },
         canActivate: [UserRouteAccessService],

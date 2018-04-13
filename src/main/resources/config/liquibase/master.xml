@@ -4,15 +4,15 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 
+	<include file="config/liquibase/changelog/20180406050313_changelog.xml" relativeToChangelogFile="false"/>
+	<include file="config/liquibase/changelog/20180405172701_changelog.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20180321040351_added_entity_Role.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180325100600_added_entity_CourtType.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180325102441_added_entity_CourtLocation.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180325104357_added_entity_Court.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180328020448_added_entity_Booking.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180403030818_added_entity_BookingStatus.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
-    <include file="config/liquibase/changelog/20180321040351_added_entity_constraints_Role.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180325104357_added_entity_constraints_Court.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180328020448_added_entity_constraints_Booking.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->

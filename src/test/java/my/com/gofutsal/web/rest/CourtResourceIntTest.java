@@ -31,6 +31,7 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import my.com.gofutsal.domain.enumeration.Region;
 /**
  * Test class for the CourtResource REST controller.
  *
@@ -45,6 +46,9 @@ public class CourtResourceIntTest {
 
     private static final String DEFAULT_RATE = "AAAAAAAAAA";
     private static final String UPDATED_RATE = "BBBBBBBBBB";
+
+    private static final Region DEFAULT_COURT = Region.PetalingJaya;
+    private static final Region UPDATED_COURT = Region.KelanaJaya;
 
     @Autowired
     private CourtRepository courtRepository;
@@ -91,7 +95,8 @@ public class CourtResourceIntTest {
     public static Court createEntity(EntityManager em) {
         Court court = new Court()
             .name(DEFAULT_NAME)
-            .rate(DEFAULT_RATE);
+            .rate(DEFAULT_RATE)
+            .court(DEFAULT_COURT);
         return court;
     }
 
@@ -118,6 +123,7 @@ public class CourtResourceIntTest {
         Court testCourt = courtList.get(courtList.size() - 1);
         assertThat(testCourt.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testCourt.getRate()).isEqualTo(DEFAULT_RATE);
+        assertThat(testCourt.getCourt()).isEqualTo(DEFAULT_COURT);
 
         // Validate the Court in Elasticsearch
         Court courtEs = courtSearchRepository.findOne(testCourt.getId());
@@ -191,7 +197,8 @@ public class CourtResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(court.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].rate").value(hasItem(DEFAULT_RATE.toString())));
+            .andExpect(jsonPath("$.[*].rate").value(hasItem(DEFAULT_RATE.toString())))
+            .andExpect(jsonPath("$.[*].court").value(hasItem(DEFAULT_COURT.toString())));
     }
 
     @Test
@@ -206,7 +213,8 @@ public class CourtResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(court.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
-            .andExpect(jsonPath("$.rate").value(DEFAULT_RATE.toString()));
+            .andExpect(jsonPath("$.rate").value(DEFAULT_RATE.toString()))
+            .andExpect(jsonPath("$.court").value(DEFAULT_COURT.toString()));
     }
 
     @Test
@@ -231,7 +239,8 @@ public class CourtResourceIntTest {
         em.detach(updatedCourt);
         updatedCourt
             .name(UPDATED_NAME)
-            .rate(UPDATED_RATE);
+            .rate(UPDATED_RATE)
+            .court(UPDATED_COURT);
 
         restCourtMockMvc.perform(put("/api/courts")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -244,6 +253,7 @@ public class CourtResourceIntTest {
         Court testCourt = courtList.get(courtList.size() - 1);
         assertThat(testCourt.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testCourt.getRate()).isEqualTo(UPDATED_RATE);
+        assertThat(testCourt.getCourt()).isEqualTo(UPDATED_COURT);
 
         // Validate the Court in Elasticsearch
         Court courtEs = courtSearchRepository.findOne(testCourt.getId());
@@ -302,7 +312,8 @@ public class CourtResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(court.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].rate").value(hasItem(DEFAULT_RATE.toString())));
+            .andExpect(jsonPath("$.[*].rate").value(hasItem(DEFAULT_RATE.toString())))
+            .andExpect(jsonPath("$.[*].court").value(hasItem(DEFAULT_COURT.toString())));
     }
 
     @Test

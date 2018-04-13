@@ -10,6 +10,8 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
 import java.util.Objects;
 
+import my.com.gofutsal.domain.enumeration.State;
+
 /**
  * A CourtLocation.
  */
@@ -26,20 +28,16 @@ public class CourtLocation implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "region", nullable = false)
-    private String region;
-
-    @NotNull
     @Column(name = "address", nullable = false)
     private String address;
 
     @NotNull
-    @Column(name = "state", nullable = false)
-    private String state;
-
-    @NotNull
     @Column(name = "country", nullable = false)
     private String country;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "state")
+    private State state;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -48,19 +46,6 @@ public class CourtLocation implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getRegion() {
-        return region;
-    }
-
-    public CourtLocation region(String region) {
-        this.region = region;
-        return this;
-    }
-
-    public void setRegion(String region) {
-        this.region = region;
     }
 
     public String getAddress() {
@@ -76,19 +61,6 @@ public class CourtLocation implements Serializable {
         this.address = address;
     }
 
-    public String getState() {
-        return state;
-    }
-
-    public CourtLocation state(String state) {
-        this.state = state;
-        return this;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
     public String getCountry() {
         return country;
     }
@@ -100,6 +72,19 @@ public class CourtLocation implements Serializable {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public CourtLocation state(State state) {
+        this.state = state;
+        return this;
+    }
+
+    public void setState(State state) {
+        this.state = state;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
@@ -127,10 +112,9 @@ public class CourtLocation implements Serializable {
     public String toString() {
         return "CourtLocation{" +
             "id=" + getId() +
-            ", region='" + getRegion() + "'" +
             ", address='" + getAddress() + "'" +
-            ", state='" + getState() + "'" +
             ", country='" + getCountry() + "'" +
+            ", state='" + getState() + "'" +
             "}";
     }
 }

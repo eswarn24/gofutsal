@@ -31,6 +31,7 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import my.com.gofutsal.domain.enumeration.State;
 /**
  * Test class for the CourtLocationResource REST controller.
  *
@@ -40,17 +41,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = GofutsalApp.class)
 public class CourtLocationResourceIntTest {
 
-    private static final String DEFAULT_REGION = "AAAAAAAAAA";
-    private static final String UPDATED_REGION = "BBBBBBBBBB";
-
     private static final String DEFAULT_ADDRESS = "AAAAAAAAAA";
     private static final String UPDATED_ADDRESS = "BBBBBBBBBB";
 
-    private static final String DEFAULT_STATE = "AAAAAAAAAA";
-    private static final String UPDATED_STATE = "BBBBBBBBBB";
-
     private static final String DEFAULT_COUNTRY = "AAAAAAAAAA";
     private static final String UPDATED_COUNTRY = "BBBBBBBBBB";
+
+    private static final State DEFAULT_STATE = State.Johor;
+    private static final State UPDATED_STATE = State.Kedah;
 
     @Autowired
     private CourtLocationRepository courtLocationRepository;
@@ -96,10 +94,9 @@ public class CourtLocationResourceIntTest {
      */
     public static CourtLocation createEntity(EntityManager em) {
         CourtLocation courtLocation = new CourtLocation()
-            .region(DEFAULT_REGION)
             .address(DEFAULT_ADDRESS)
-            .state(DEFAULT_STATE)
-            .country(DEFAULT_COUNTRY);
+            .country(DEFAULT_COUNTRY)
+            .state(DEFAULT_STATE);
         return courtLocation;
     }
 
@@ -124,10 +121,9 @@ public class CourtLocationResourceIntTest {
         List<CourtLocation> courtLocationList = courtLocationRepository.findAll();
         assertThat(courtLocationList).hasSize(databaseSizeBeforeCreate + 1);
         CourtLocation testCourtLocation = courtLocationList.get(courtLocationList.size() - 1);
-        assertThat(testCourtLocation.getRegion()).isEqualTo(DEFAULT_REGION);
         assertThat(testCourtLocation.getAddress()).isEqualTo(DEFAULT_ADDRESS);
-        assertThat(testCourtLocation.getState()).isEqualTo(DEFAULT_STATE);
         assertThat(testCourtLocation.getCountry()).isEqualTo(DEFAULT_COUNTRY);
+        assertThat(testCourtLocation.getState()).isEqualTo(DEFAULT_STATE);
 
         // Validate the CourtLocation in Elasticsearch
         CourtLocation courtLocationEs = courtLocationSearchRepository.findOne(testCourtLocation.getId());
@@ -155,46 +151,10 @@ public class CourtLocationResourceIntTest {
 
     @Test
     @Transactional
-    public void checkRegionIsRequired() throws Exception {
-        int databaseSizeBeforeTest = courtLocationRepository.findAll().size();
-        // set the field null
-        courtLocation.setRegion(null);
-
-        // Create the CourtLocation, which fails.
-
-        restCourtLocationMockMvc.perform(post("/api/court-locations")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(courtLocation)))
-            .andExpect(status().isBadRequest());
-
-        List<CourtLocation> courtLocationList = courtLocationRepository.findAll();
-        assertThat(courtLocationList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void checkAddressIsRequired() throws Exception {
         int databaseSizeBeforeTest = courtLocationRepository.findAll().size();
         // set the field null
         courtLocation.setAddress(null);
-
-        // Create the CourtLocation, which fails.
-
-        restCourtLocationMockMvc.perform(post("/api/court-locations")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(courtLocation)))
-            .andExpect(status().isBadRequest());
-
-        List<CourtLocation> courtLocationList = courtLocationRepository.findAll();
-        assertThat(courtLocationList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkStateIsRequired() throws Exception {
-        int databaseSizeBeforeTest = courtLocationRepository.findAll().size();
-        // set the field null
-        courtLocation.setState(null);
 
         // Create the CourtLocation, which fails.
 
@@ -236,10 +196,9 @@ public class CourtLocationResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(courtLocation.getId().intValue())))
-            .andExpect(jsonPath("$.[*].region").value(hasItem(DEFAULT_REGION.toString())))
             .andExpect(jsonPath("$.[*].address").value(hasItem(DEFAULT_ADDRESS.toString())))
-            .andExpect(jsonPath("$.[*].state").value(hasItem(DEFAULT_STATE.toString())))
-            .andExpect(jsonPath("$.[*].country").value(hasItem(DEFAULT_COUNTRY.toString())));
+            .andExpect(jsonPath("$.[*].country").value(hasItem(DEFAULT_COUNTRY.toString())))
+            .andExpect(jsonPath("$.[*].state").value(hasItem(DEFAULT_STATE.toString())));
     }
 
     @Test
@@ -253,10 +212,9 @@ public class CourtLocationResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(courtLocation.getId().intValue()))
-            .andExpect(jsonPath("$.region").value(DEFAULT_REGION.toString()))
             .andExpect(jsonPath("$.address").value(DEFAULT_ADDRESS.toString()))
-            .andExpect(jsonPath("$.state").value(DEFAULT_STATE.toString()))
-            .andExpect(jsonPath("$.country").value(DEFAULT_COUNTRY.toString()));
+            .andExpect(jsonPath("$.country").value(DEFAULT_COUNTRY.toString()))
+            .andExpect(jsonPath("$.state").value(DEFAULT_STATE.toString()));
     }
 
     @Test
@@ -280,10 +238,9 @@ public class CourtLocationResourceIntTest {
         // Disconnect from session so that the updates on updatedCourtLocation are not directly saved in db
         em.detach(updatedCourtLocation);
         updatedCourtLocation
-            .region(UPDATED_REGION)
             .address(UPDATED_ADDRESS)
-            .state(UPDATED_STATE)
-            .country(UPDATED_COUNTRY);
+            .country(UPDATED_COUNTRY)
+            .state(UPDATED_STATE);
 
         restCourtLocationMockMvc.perform(put("/api/court-locations")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -294,10 +251,9 @@ public class CourtLocationResourceIntTest {
         List<CourtLocation> courtLocationList = courtLocationRepository.findAll();
         assertThat(courtLocationList).hasSize(databaseSizeBeforeUpdate);
         CourtLocation testCourtLocation = courtLocationList.get(courtLocationList.size() - 1);
-        assertThat(testCourtLocation.getRegion()).isEqualTo(UPDATED_REGION);
         assertThat(testCourtLocation.getAddress()).isEqualTo(UPDATED_ADDRESS);
-        assertThat(testCourtLocation.getState()).isEqualTo(UPDATED_STATE);
         assertThat(testCourtLocation.getCountry()).isEqualTo(UPDATED_COUNTRY);
+        assertThat(testCourtLocation.getState()).isEqualTo(UPDATED_STATE);
 
         // Validate the CourtLocation in Elasticsearch
         CourtLocation courtLocationEs = courtLocationSearchRepository.findOne(testCourtLocation.getId());
@@ -355,10 +311,9 @@ public class CourtLocationResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(courtLocation.getId().intValue())))
-            .andExpect(jsonPath("$.[*].region").value(hasItem(DEFAULT_REGION.toString())))
             .andExpect(jsonPath("$.[*].address").value(hasItem(DEFAULT_ADDRESS.toString())))
-            .andExpect(jsonPath("$.[*].state").value(hasItem(DEFAULT_STATE.toString())))
-            .andExpect(jsonPath("$.[*].country").value(hasItem(DEFAULT_COUNTRY.toString())));
+            .andExpect(jsonPath("$.[*].country").value(hasItem(DEFAULT_COUNTRY.toString())))
+            .andExpect(jsonPath("$.[*].state").value(hasItem(DEFAULT_STATE.toString())));
     }
 
     @Test

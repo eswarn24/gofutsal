@@ -29,25 +29,20 @@
                     </span>
                 </a>
                 <ul class="dropdown-menu" ngbDropdownMenu>
-                   <!--   <li>
-                        <a class="dropdown-item" routerLink="role" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
-                            <span>Role</span>
-                        </a>
-                    </li> -->
+                   
                     <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
                         <a class="dropdown-item" routerLink="court-type" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span>Court Type</span>
                         </a>
                     </li>
-                    <li *jhiHasAnyAuthority="'ROLE_MANAGER'">
+                    <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
                         <a class="dropdown-item" routerLink="court-location" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span>Court Location</span>
                         </a>
                     </li>
-                    <li *jhiHasAnyAuthority="'ROLE_MANAGER'">
+                    <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
                         <a class="dropdown-item" routerLink="court" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span>Court</span>
@@ -59,25 +54,14 @@
                             <span>Booking</span>
                         </a>
                     </li>
-                    <li>
+                    <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
                         <a class="dropdown-item" routerLink="booking-status" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span>Booking Status</span>
                         </a>
                     </li>
-                    <li>
-                        <a class="dropdown-item" routerLink="booking" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
-                            <span>Booking</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" routerLink="court" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
-                            <span>Court</span>
-                        </a>
-                    </li>
-                    <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
+                    
+                     <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
                 </ul>
             </li>
             <li *jhiHasAnyAuthority="'ROLE_ADMIN'" ngbDropdown class="nav-item dropdown pointer" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">

@@ -10,6 +10,8 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
 import java.util.Objects;
 
+import my.com.gofutsal.domain.enumeration.Region;
+
 /**
  * A Court.
  */
@@ -32,6 +34,10 @@ public class Court implements Serializable {
     @NotNull
     @Column(name = "rate", nullable = false)
     private String rate;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "court")
+    private Region court;
 
     @OneToOne
     @JoinColumn(unique = true)
@@ -77,6 +83,19 @@ public class Court implements Serializable {
 
     public void setRate(String rate) {
         this.rate = rate;
+    }
+
+    public Region getCourt() {
+        return court;
+    }
+
+    public Court court(Region court) {
+        this.court = court;
+        return this;
+    }
+
+    public void setCourt(Region court) {
+        this.court = court;
     }
 
     public CourtLocation getCourtLocation() {
@@ -145,6 +164,7 @@ public class Court implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", rate='" + getRate() + "'" +
+            ", court='" + getCourt() + "'" +
             "}";
     }
 }
