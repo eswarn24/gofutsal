@@ -2,12 +2,8 @@ package my.com.gofutsal.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import my.com.gofutsal.domain.Booking;
-import my.com.gofutsal.domain.Court;
-import my.com.gofutsal.domain.User;
-import my.com.gofutsal.repository.CourtRepository;
-import my.com.gofutsal.repository.UserRepository;
+import my.com.gofutsal.domain.enumeration.UserBookingStatus;
 import my.com.gofutsal.service.BookingService;
-import my.com.gofutsal.service.MailService;
 import my.com.gofutsal.web.rest.errors.BadRequestAlertException;
 import my.com.gofutsal.web.rest.util.HeaderUtil;
 import my.com.gofutsal.web.rest.util.PaginationUtil;
@@ -48,19 +44,9 @@ public class BookingResource {
 
     private final BookingQueryService bookingQueryService;
 
-    private final MailService mailService;
-
-    private final UserRepository userRepository;
-
-    private final CourtRepository courtRepository;
-
-    public BookingResource(BookingService bookingService, BookingQueryService bookingQueryService, MailService mailService, UserRepository userRepository, CourtRepository courtRepository) {
+    public BookingResource(BookingService bookingService, BookingQueryService bookingQueryService) {
         this.bookingService = bookingService;
         this.bookingQueryService = bookingQueryService;
-        this.mailService = mailService;
-        this.userRepository=userRepository;
-        this.courtRepository=courtRepository;
-
     }
 
     /**
@@ -74,14 +60,11 @@ public class BookingResource {
     @Timed
     public ResponseEntity<Booking> createBooking(@Valid @RequestBody Booking booking) throws URISyntaxException {
         log.debug("REST request to save Booking : {}", booking);
+        booking.setStatus(UserBookingStatus.Requested);
         if (booking.getId() != null) {
             throw new BadRequestAlertException("A new booking cannot already have an ID", ENTITY_NAME, "idexists");
         }
         Booking result = bookingService.save(booking);
-        Court court=courtRepository.findOne(booking.getCourt().getId());
-        User courtOwner=userRepository.findOne(court.getUser().getId());
-        //User  user=userService.getUserWithAuthorities();
-        mailService.sendEmailFromTemplate(courtOwner, "bookingNotificationEmail","email.activation.title");
         return ResponseEntity.created(new URI("/api/bookings/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);

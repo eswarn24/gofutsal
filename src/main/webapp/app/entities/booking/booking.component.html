@@ -1,19 +1,14 @@
 <div>
     <h2>
         <span>Bookings</span>
-        <button class="btn btn-primary float-right jh-create-entity create-booking" [routerLink]="['/', { outlets: { popup: ['booking-new'] } }]">
-            <span class="fa fa-plus"></span>
-            <span class="hidden-sm-down" >
-            Create new Booking
-            </span>
-        </button>
+
     </h2>
     <jhi-alert></jhi-alert>
     <div class="row">
         <div class="col-sm-12">
             <form name="searchForm" class="form-inline">
                 <div class="input-group w-100 mt-3">
-                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="Query">
+                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="Search Bookings">
                     <button class="input-group-append btn btn-info" (click)="search(currentSearch)">
                         <span class="fa fa-search"></span>
                     </button>
@@ -25,66 +20,70 @@
         </div>
     </div>
     <br/>
-    <div class="table-responsive" *ngIf="bookings">
+    <div class="table-responsive" *ngIf="courts">
         <table class="table table-striped">
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
-            <th jhiSortBy="id"><span>ID</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="date"><span>Date</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="startTime"><span>Start Time</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="endTime"><span>End Time</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="court.name"><span>Court</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="bookingStatus.status"><span>Booking Status</span> <span class="fa fa-sort"></span></th>
-            <th></th>
+                <th jhiSortBy="id"><span>ID</span> <span class="fa fa-sort"></span></th>
+                <th jhiSortBy="name"><span>Name</span> <span class="fa fa-sort"></span></th>
+                <th jhiSortBy="rate"><span>Rate</span> <span class="fa fa-sort"></span></th>
+                <th jhiSortBy="region"><span>Region</span> <span class="fa fa-sort"></span></th>
+               <!-- <th jhiSortBy="courtImage"><span>Court Image</span> <span class="fa fa-sort"></span></th>-->
+                <th jhiSortBy="courtType.type"><span>Court Type</span> <span class="fa fa-sort"></span></th>
+              <!--  <th jhiSortBy="user.login"><span>User</span> <span class="fa fa-sort"></span></th>-->
+                <th jhiSortBy="courtLocation.address"><span>Court Location</span> <span class="fa fa-sort"></span></th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let booking of bookings ;trackBy: trackId">
-                <td><a [routerLink]="['../booking', booking.id ]">{{booking.id}}</a></td>
-                <td>{{booking.date | date:'mediumDate'}}</td>
-                <td>{{booking.startTime | date:'medium'}}</td>
-                <td>{{booking.endTime | date:'medium'}}</td>
-                <td>
-                    <div *ngIf="booking.court">
-                        <a [routerLink]="['../court', booking.court?.id ]" >{{booking.court?.name}}</a>
+            <tr *ngFor="let court of courts ;trackBy: trackId">
+              <!--  <td><a [routerLink]="['../../court', court.id ]">{{court.id}}</a></td>-->
+                <td>{{court.id}}</td>
+                <td>{{court.name}}</td>
+                <td>{{court.rate}}</td>
+                <td>{{court.region}}</td>
+               <!-- <td>
+                    <a *ngIf="court.courtImage" (click)="openFile(court.courtImageContentType, court.courtImage)">
+                        <img [src]="'data:' + court.courtImageContentType + ';base64,' + court.courtImage" style="max-height: 30px;" alt="court image"/>
+                    </a>
+                    <span *ngIf="court.courtImage">{{court.courtImageContentType}}, {{byteSize(court.courtImage)}}</span>
+                </td>-->
+               <!-- <td>
+                    <div *ngIf="court.courtType">
+                        <a [routerLink]="['../court-type', court.courtType?.id ]" >{{court.courtType?.type}}</a>
                     </div>
-                </td>
+                </td>-->
                 <td>
-                    <div *ngIf="booking.bookingStatus">
-                        <a [routerLink]="['../booking-status', booking.bookingStatus?.id ]" >{{booking.bookingStatus?.status}}</a>
-                    </div>
+                    {{court.courtType?.type}}
                 </td>
+               <!-- <td>
+                    {{court.user?.login}}
+                </td>-->
+               <!-- <td>
+                    <div *ngIf="court.courtLocation">
+                        <a [routerLink]="['../court-location', court.courtLocation?.id ]" >{{court.courtLocation?.address}}</a>
+                    </div>
+                </td>-->
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
+
                         <button type="submit"
-                                [routerLink]="['../booking', booking.id ]"
-                                class="btn btn-info btn-sm">
-                            <span class="fa fa-eye"></span>
-                            <span class="d-none d-md-inline">View</span>
-                        </button>
-                        <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'booking/'+ booking.id + '/edit'} }]"
+                                [routerLink]="['/', { outlets: { popup: 'booking/'+ court.id + '/create'} }]"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
-                                class="btn btn-primary btn-sm">
+                                class="btn btn-primary float-right jh-create-entity create-booking">
+                                <!--class="btn btn-primary btn-sm">-->
                             <span class="fa fa-pencil"></span>
-                            <span class="d-none d-md-inline">Edit</span>
+                            <span class="d-none d-md-inline">Book</span>
                         </button>
-                        <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'booking/'+ booking.id + '/delete'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
-                                class="btn btn-danger btn-sm">
-                            <span class="fa fa-remove"></span>
-                            <span class="d-none d-md-inline">Delete</span>
-                        </button>
+
                     </div>
                 </td>
             </tr>
             </tbody>
         </table>
     </div>
-    <div *ngIf="bookings && bookings.length">
+    <div *ngIf="courts && courts.length">
         <div class="row justify-content-center">
             <jhi-item-count [page]="page" [total]="queryCount" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
         </div>

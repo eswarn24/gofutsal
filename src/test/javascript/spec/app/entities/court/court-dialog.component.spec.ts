@@ -9,9 +9,9 @@ import { GofutsalTestModule } from '../../../test.module';
 import { CourtDialogComponent } from '../../../../../../main/webapp/app/entities/court/court-dialog.component';
 import { CourtService } from '../../../../../../main/webapp/app/entities/court/court.service';
 import { Court } from '../../../../../../main/webapp/app/entities/court/court.model';
-import { CourtLocationService } from '../../../../../../main/webapp/app/entities/court-location';
 import { CourtTypeService } from '../../../../../../main/webapp/app/entities/court-type';
 import { UserService } from '../../../../../../main/webapp/app/shared';
+import { CourtLocationService } from '../../../../../../main/webapp/app/entities/court-location';
 
 describe('Component Tests', () => {
 
@@ -27,9 +27,9 @@ describe('Component Tests', () => {
                 imports: [GofutsalTestModule],
                 declarations: [CourtDialogComponent],
                 providers: [
-                    CourtLocationService,
                     CourtTypeService,
                     UserService,
+                    CourtLocationService,
                     CourtService
                 ]
             })

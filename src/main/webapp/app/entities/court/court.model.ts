@@ -1,16 +1,16 @@
 import { BaseEntity, User } from './../../shared';
 
 export const enum Region {
-    'Petaling Jaya',
-    'Kelana Jaya',
-    'Putra Jaya',
-    'Kuala lumpur',
-    'Subang Jaya',
+    'PetalingJaya',
+    'KelanaJaya',
+    'PutraJaya',
+    'Kualalumpur',
+    'SubangJaya',
     'Damansara',
     'USJ',
     'Puchong',
     'Nilai',
-    'Bukit Bintang'
+    'BukitBintang'
 }
 
 export class Court implements BaseEntity {
@@ -18,10 +18,12 @@ export class Court implements BaseEntity {
         public id?: number,
         public name?: string,
         public rate?: string,
-        public court?: Region,
-        public courtLocation?: BaseEntity,
+        public region?: Region,
+        public courtImageContentType?: string,
+        public courtImage?: any,
         public courtType?: BaseEntity,
         public user?: User,
+        public courtLocation?: BaseEntity,
     ) {
     }
 }

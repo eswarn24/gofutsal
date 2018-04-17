@@ -12,14 +12,17 @@
         <dd>
             <span>{{court.rate}}</span>
         </dd>
-        <dt><span>Court</span></dt>
+        <dt><span>Region</span></dt>
         <dd>
-            <span>{{court.court}}</span>
+            <span>{{court.region}}</span>
         </dd>
-        <dt><span>Court Location</span></dt>
+        <dt><span>Court Image</span></dt>
         <dd>
-            <div *ngIf="court.courtLocation">
-                <a [routerLink]="['/court-location', court.courtLocation?.id]">{{court.courtLocation?.region}}</a>
+            <div *ngIf="court.courtImage">
+                <a (click)="openFile(court.courtImageContentType, court.courtImage)">
+                    <img [src]="'data:' + court.courtImageContentType + ';base64,' + court.courtImage" style="max-width: 100%;" alt="court image"/>
+                </a>
+                {{court.courtImageContentType}}, {{byteSize(court.courtImage)}}
             </div>
         </dd>
         <dt><span>Court Type</span></dt>
@@ -28,9 +31,15 @@
                 <a [routerLink]="['/court-type', court.courtType?.id]">{{court.courtType?.type}}</a>
             </div>
         </dd>
-        <dt><span>User</span></dt>
+        <!--<dt><span>User</span></dt>-->
+        <!--<dd>-->
+            <!--{{court.user?.login}}-->
+        <!--</dd>-->
+        <dt><span>Court Location</span></dt>
         <dd>
-            {{court.user?.login}}
+            <div *ngIf="court.courtLocation">
+                <a [routerLink]="['/court-location', court.courtLocation?.id]">{{court.courtLocation?.address}}</a>
+            </div>
         </dd>
     </dl>
 

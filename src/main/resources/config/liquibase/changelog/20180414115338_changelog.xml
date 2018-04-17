@@ -1,0 +1,20 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="localadmin (generated)" id="1523706877565-1">
+        <addColumn tableName="booking">
+            <column name="status" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="localadmin (generated)" id="1523706877565-2">
+        <dropForeignKeyConstraint baseTableName="booking" constraintName="FKm3d0q9s1hos02eamx9wrsupaq"/>
+    </changeSet>
+    <changeSet author="localadmin (generated)" id="1523706877565-3">
+        <dropUniqueConstraint constraintName="UC_BOOKINGBOOKING_STATUS_ID_COL" tableName="booking"/>
+    </changeSet>
+    <changeSet author="localadmin (generated)" id="1523706877565-4">
+        <dropUniqueConstraint constraintName="UC_COURTCOURT_LOCATION_ID_COL" tableName="court"/>
+    </changeSet>
+    <changeSet author="localadmin (generated)" id="1523706877565-5">
+        <dropColumn columnName="booking_status_id" tableName="booking"/>
+    </changeSet>
+</databaseChangeLog>

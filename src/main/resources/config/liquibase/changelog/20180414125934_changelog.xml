@@ -1,0 +1,42 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="localadmin (generated)" id="1523710819392-1">
+        <createTable tableName="booking">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="bookingPK"/>
+            </column>
+            <column name="jhi_date" type="TINYBLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="end_time" type="TINYBLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="start_time" type="TINYBLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(255)"/>
+            <column name="court_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="localadmin (generated)" id="1523710819392-2">
+        <createTable tableName="booking_status">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="booking_statusPK"/>
+            </column>
+            <column name="status" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="localadmin (generated)" id="1523710819392-3">
+        <addUniqueConstraint columnNames="court_id" constraintName="UK_7wnc6qou4jtgsvsmm808m2h4g" tableName="booking"/>
+    </changeSet>
+    <changeSet author="localadmin (generated)" id="1523710819392-4">
+        <addForeignKeyConstraint baseColumnNames="court_id" baseTableName="booking" constraintName="FK8086mrvdgwdllb70v0cylusv2" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="court"/>
+    </changeSet>
+    <changeSet author="localadmin (generated)" id="1523710819392-5">
+        <dropUniqueConstraint constraintName="UC_COURTCOURT_LOCATION_ID_COL" tableName="court"/>
+    </changeSet>
+</databaseChangeLog>

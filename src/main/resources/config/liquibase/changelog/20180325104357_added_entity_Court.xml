@@ -30,15 +30,24 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="court" type="varchar(255)">
+            <column name="region" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="court_image" type="longblob">
                 <constraints nullable="true" />
             </column>
-            <column name="court_location_id" type="bigint">
-                <constraints unique="true" nullable="true" />
-            </column>            <column name="court_type_id" type="bigint">
+            <column name="court_image_content_type" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="court_type_id" type="bigint">
                 <constraints unique="true" nullable="true" />
             </column>
             <column name="user_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="court_location_id" type="bigint">
                 <constraints nullable="true" />
             </column>
 

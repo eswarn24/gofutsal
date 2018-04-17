@@ -35,13 +35,17 @@ public class Court implements Serializable {
     @Column(name = "rate", nullable = false)
     private String rate;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "court")
-    private Region court;
+    @Column(name = "region", nullable = false)
+    private Region region;
 
-    @OneToOne
-    @JoinColumn(unique = true)
-    private CourtLocation courtLocation;
+    @Lob
+    @Column(name = "court_image")
+    private byte[] courtImage;
+
+    @Column(name = "court_image_content_type")
+    private String courtImageContentType;
 
     @OneToOne
     @JoinColumn(unique = true)
@@ -49,6 +53,9 @@ public class Court implements Serializable {
 
     @ManyToOne
     private User user;
+
+    @ManyToOne
+    private CourtLocation courtLocation;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -85,30 +92,43 @@ public class Court implements Serializable {
         this.rate = rate;
     }
 
-    public Region getCourt() {
-        return court;
+    public Region getRegion() {
+        return region;
     }
 
-    public Court court(Region court) {
-        this.court = court;
+    public Court region(Region region) {
+        this.region = region;
         return this;
     }
 
-    public void setCourt(Region court) {
-        this.court = court;
+    public void setRegion(Region region) {
+        this.region = region;
     }
 
-    public CourtLocation getCourtLocation() {
-        return courtLocation;
+    public byte[] getCourtImage() {
+        return courtImage;
     }
 
-    public Court courtLocation(CourtLocation courtLocation) {
-        this.courtLocation = courtLocation;
+    public Court courtImage(byte[] courtImage) {
+        this.courtImage = courtImage;
         return this;
     }
 
-    public void setCourtLocation(CourtLocation courtLocation) {
-        this.courtLocation = courtLocation;
+    public void setCourtImage(byte[] courtImage) {
+        this.courtImage = courtImage;
+    }
+
+    public String getCourtImageContentType() {
+        return courtImageContentType;
+    }
+
+    public Court courtImageContentType(String courtImageContentType) {
+        this.courtImageContentType = courtImageContentType;
+        return this;
+    }
+
+    public void setCourtImageContentType(String courtImageContentType) {
+        this.courtImageContentType = courtImageContentType;
     }
 
     public CourtType getCourtType() {
@@ -135,6 +155,19 @@ public class Court implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public CourtLocation getCourtLocation() {
+        return courtLocation;
+    }
+
+    public Court courtLocation(CourtLocation courtLocation) {
+        this.courtLocation = courtLocation;
+        return this;
+    }
+
+    public void setCourtLocation(CourtLocation courtLocation) {
+        this.courtLocation = courtLocation;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
@@ -164,7 +197,9 @@ public class Court implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", rate='" + getRate() + "'" +
-            ", court='" + getCourt() + "'" +
+            ", region='" + getRegion() + "'" +
+            ", courtImage='" + getCourtImage() + "'" +
+            ", courtImageContentType='" + getCourtImageContentType() + "'" +
             "}";
     }
 }

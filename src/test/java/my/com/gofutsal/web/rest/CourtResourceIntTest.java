@@ -21,6 +21,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Base64Utils;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -47,8 +48,13 @@ public class CourtResourceIntTest {
     private static final String DEFAULT_RATE = "AAAAAAAAAA";
     private static final String UPDATED_RATE = "BBBBBBBBBB";
 
-    private static final Region DEFAULT_COURT = Region.PetalingJaya;
-    private static final Region UPDATED_COURT = Region.KelanaJaya;
+    private static final Region DEFAULT_REGION = Region.PetalingJaya;
+    private static final Region UPDATED_REGION = Region.KelanaJaya;
+
+    private static final byte[] DEFAULT_COURT_IMAGE = TestUtil.createByteArray(1, "0");
+    private static final byte[] UPDATED_COURT_IMAGE = TestUtil.createByteArray(2, "1");
+    private static final String DEFAULT_COURT_IMAGE_CONTENT_TYPE = "image/jpg";
+    private static final String UPDATED_COURT_IMAGE_CONTENT_TYPE = "image/png";
 
     @Autowired
     private CourtRepository courtRepository;
@@ -96,7 +102,9 @@ public class CourtResourceIntTest {
         Court court = new Court()
             .name(DEFAULT_NAME)
             .rate(DEFAULT_RATE)
-            .court(DEFAULT_COURT);
+            .region(DEFAULT_REGION)
+            .courtImage(DEFAULT_COURT_IMAGE)
+            .courtImageContentType(DEFAULT_COURT_IMAGE_CONTENT_TYPE);
         return court;
     }
 
@@ -123,7 +131,9 @@ public class CourtResourceIntTest {
         Court testCourt = courtList.get(courtList.size() - 1);
         assertThat(testCourt.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testCourt.getRate()).isEqualTo(DEFAULT_RATE);
-        assertThat(testCourt.getCourt()).isEqualTo(DEFAULT_COURT);
+        assertThat(testCourt.getRegion()).isEqualTo(DEFAULT_REGION);
+        assertThat(testCourt.getCourtImage()).isEqualTo(DEFAULT_COURT_IMAGE);
+        assertThat(testCourt.getCourtImageContentType()).isEqualTo(DEFAULT_COURT_IMAGE_CONTENT_TYPE);
 
         // Validate the Court in Elasticsearch
         Court courtEs = courtSearchRepository.findOne(testCourt.getId());
@@ -187,6 +197,24 @@ public class CourtResourceIntTest {
 
     @Test
     @Transactional
+    public void checkRegionIsRequired() throws Exception {
+        int databaseSizeBeforeTest = courtRepository.findAll().size();
+        // set the field null
+        court.setRegion(null);
+
+        // Create the Court, which fails.
+
+        restCourtMockMvc.perform(post("/api/courts")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(court)))
+            .andExpect(status().isBadRequest());
+
+        List<Court> courtList = courtRepository.findAll();
+        assertThat(courtList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllCourts() throws Exception {
         // Initialize the database
         courtRepository.saveAndFlush(court);
@@ -198,7 +226,9 @@ public class CourtResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(court.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
             .andExpect(jsonPath("$.[*].rate").value(hasItem(DEFAULT_RATE.toString())))
-            .andExpect(jsonPath("$.[*].court").value(hasItem(DEFAULT_COURT.toString())));
+            .andExpect(jsonPath("$.[*].region").value(hasItem(DEFAULT_REGION.toString())))
+            .andExpect(jsonPath("$.[*].courtImageContentType").value(hasItem(DEFAULT_COURT_IMAGE_CONTENT_TYPE)))
+            .andExpect(jsonPath("$.[*].courtImage").value(hasItem(Base64Utils.encodeToString(DEFAULT_COURT_IMAGE))));
     }
 
     @Test
@@ -214,7 +244,9 @@ public class CourtResourceIntTest {
             .andExpect(jsonPath("$.id").value(court.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
             .andExpect(jsonPath("$.rate").value(DEFAULT_RATE.toString()))
-            .andExpect(jsonPath("$.court").value(DEFAULT_COURT.toString()));
+            .andExpect(jsonPath("$.region").value(DEFAULT_REGION.toString()))
+            .andExpect(jsonPath("$.courtImageContentType").value(DEFAULT_COURT_IMAGE_CONTENT_TYPE))
+            .andExpect(jsonPath("$.courtImage").value(Base64Utils.encodeToString(DEFAULT_COURT_IMAGE)));
     }
 
     @Test
@@ -240,7 +272,9 @@ public class CourtResourceIntTest {
         updatedCourt
             .name(UPDATED_NAME)
             .rate(UPDATED_RATE)
-            .court(UPDATED_COURT);
+            .region(UPDATED_REGION)
+            .courtImage(UPDATED_COURT_IMAGE)
+            .courtImageContentType(UPDATED_COURT_IMAGE_CONTENT_TYPE);
 
         restCourtMockMvc.perform(put("/api/courts")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -253,7 +287,9 @@ public class CourtResourceIntTest {
         Court testCourt = courtList.get(courtList.size() - 1);
         assertThat(testCourt.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testCourt.getRate()).isEqualTo(UPDATED_RATE);
-        assertThat(testCourt.getCourt()).isEqualTo(UPDATED_COURT);
+        assertThat(testCourt.getRegion()).isEqualTo(UPDATED_REGION);
+        assertThat(testCourt.getCourtImage()).isEqualTo(UPDATED_COURT_IMAGE);
+        assertThat(testCourt.getCourtImageContentType()).isEqualTo(UPDATED_COURT_IMAGE_CONTENT_TYPE);
 
         // Validate the Court in Elasticsearch
         Court courtEs = courtSearchRepository.findOne(testCourt.getId());
@@ -313,7 +349,9 @@ public class CourtResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(court.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
             .andExpect(jsonPath("$.[*].rate").value(hasItem(DEFAULT_RATE.toString())))
-            .andExpect(jsonPath("$.[*].court").value(hasItem(DEFAULT_COURT.toString())));
+            .andExpect(jsonPath("$.[*].region").value(hasItem(DEFAULT_REGION.toString())))
+            .andExpect(jsonPath("$.[*].courtImageContentType").value(hasItem(DEFAULT_COURT_IMAGE_CONTENT_TYPE)))
+            .andExpect(jsonPath("$.[*].courtImage").value(hasItem(Base64Utils.encodeToString(DEFAULT_COURT_IMAGE))));
     }
 
     @Test

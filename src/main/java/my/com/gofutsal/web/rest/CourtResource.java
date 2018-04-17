@@ -2,7 +2,10 @@ package my.com.gofutsal.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import my.com.gofutsal.domain.Court;
+import my.com.gofutsal.repository.UserRepository;
+import my.com.gofutsal.security.SecurityUtils;
 import my.com.gofutsal.service.CourtService;
+import my.com.gofutsal.service.UserService;
 import my.com.gofutsal.web.rest.errors.BadRequestAlertException;
 import my.com.gofutsal.web.rest.util.HeaderUtil;
 import my.com.gofutsal.web.rest.util.PaginationUtil;
@@ -39,8 +42,15 @@ public class CourtResource {
 
     private final CourtService courtService;
 
-    public CourtResource(CourtService courtService) {
+    private final UserService userService;
+
+    private final UserRepository userRepository;
+
+
+    public CourtResource(CourtService courtService, UserService userService, UserRepository userRepository) {
         this.courtService = courtService;
+        this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -53,7 +63,9 @@ public class CourtResource {
     @PostMapping("/courts")
     @Timed
     public ResponseEntity<Court> createCourt(@Valid @RequestBody Court court) throws URISyntaxException {
-        log.debug("REST request to save Court : {}", court);
+       /*log.debug("from class"+SecurityUtils.getCurrentUserLogin().toString());
+        log.debug("from class"+userService.getUserWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin().get()));*/
+        court.setUser(userService.getUserWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin().get()).get());
         if (court.getId() != null) {
             throw new BadRequestAlertException("A new court cannot already have an ID", ENTITY_NAME, "idexists");
         }
@@ -75,6 +87,7 @@ public class CourtResource {
     @PutMapping("/courts")
     @Timed
     public ResponseEntity<Court> updateCourt(@Valid @RequestBody Court court) throws URISyntaxException {
+        court.setUser(userService.getUserWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin().toString()).get());
         log.debug("REST request to update Court : {}", court);
         if (court.getId() == null) {
             return createCourt(court);

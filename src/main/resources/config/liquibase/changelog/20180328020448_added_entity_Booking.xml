@@ -33,10 +33,12 @@
             <column name="end_time" type="timestamp">
                 <constraints nullable="false" />
             </column>
+
+            <column name="status" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
             <column name="court_id" type="bigint">
                 <constraints unique="true" nullable="false" />
-            </column>            <column name="booking_status_id" type="bigint">
-                <constraints unique="true" nullable="true" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>

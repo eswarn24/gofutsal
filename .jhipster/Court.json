@@ -2,14 +2,6 @@
     "fluentMethods": true,
     "relationships": [
         {
-            "relationshipName": "courtLocation",
-            "otherEntityName": "courtLocation",
-            "relationshipType": "one-to-one",
-            "otherEntityField": "region",
-            "ownerSide": true,
-            "otherEntityRelationshipName": "court"
-        },
-        {
             "relationshipName": "courtType",
             "otherEntityName": "courtType",
             "relationshipType": "one-to-one",
@@ -24,6 +16,12 @@
             "otherEntityField": "login",
             "ownerSide": true,
             "otherEntityRelationshipName": "court"
+        },
+        {
+            "relationshipName": "courtLocation",
+            "otherEntityName": "courtLocation",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "address"
         }
     ],
     "fields": [
@@ -42,9 +40,17 @@
             ]
         },
         {
-            "fieldName": "court",
+            "fieldName": "region",
             "fieldType": "Region",
-            "fieldValues": "Petaling Jaya,Kelana Jaya,Putra Jaya,Kuala lumpur,Subang Jaya,Damansara,USJ,Puchong,Nilai,Bukit Bintang"
+            "fieldValues": "PetalingJaya,KelanaJaya,PutraJaya,Kualalumpur,SubangJaya,Damansara,USJ,Puchong,Nilai,BukitBintang",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "courtImage",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "image"
         }
     ],
     "changelogDate": "20180325104357",

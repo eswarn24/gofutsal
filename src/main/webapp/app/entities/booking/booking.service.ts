@@ -47,6 +47,7 @@ export class BookingService {
 
     search(req?: any): Observable<HttpResponse<Booking[]>> {
         const options = createRequestOption(req);
+        console.log("inside search method");
         return this.http.get<Booking[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
             .map((res: HttpResponse<Booking[]>) => this.convertArrayResponse(res));
     }

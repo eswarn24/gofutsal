@@ -4,7 +4,6 @@ import my.com.gofutsal.GofutsalApp;
 
 import my.com.gofutsal.domain.Booking;
 import my.com.gofutsal.domain.Court;
-import my.com.gofutsal.domain.BookingStatus;
 import my.com.gofutsal.repository.BookingRepository;
 import my.com.gofutsal.service.BookingService;
 import my.com.gofutsal.repository.search.BookingSearchRepository;
@@ -39,6 +38,7 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import my.com.gofutsal.domain.enumeration.UserBookingStatus;
 /**
  * Test class for the BookingResource REST controller.
  *
@@ -56,6 +56,9 @@ public class BookingResourceIntTest {
 
     private static final Instant DEFAULT_END_TIME = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_END_TIME = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+
+    private static final UserBookingStatus DEFAULT_STATUS = UserBookingStatus.Requested;
+    private static final UserBookingStatus UPDATED_STATUS = UserBookingStatus.Apporved;
 
     @Autowired
     private BookingRepository bookingRepository;
@@ -106,7 +109,8 @@ public class BookingResourceIntTest {
         Booking booking = new Booking()
             .date(DEFAULT_DATE)
             .startTime(DEFAULT_START_TIME)
-            .endTime(DEFAULT_END_TIME);
+            .endTime(DEFAULT_END_TIME)
+            .status(DEFAULT_STATUS);
         // Add required entity
         Court court = CourtResourceIntTest.createEntity(em);
         em.persist(court);
@@ -139,6 +143,7 @@ public class BookingResourceIntTest {
         assertThat(testBooking.getDate()).isEqualTo(DEFAULT_DATE);
         assertThat(testBooking.getStartTime()).isEqualTo(DEFAULT_START_TIME);
         assertThat(testBooking.getEndTime()).isEqualTo(DEFAULT_END_TIME);
+        assertThat(testBooking.getStatus()).isEqualTo(DEFAULT_STATUS);
 
         // Validate the Booking in Elasticsearch
         Booking bookingEs = bookingSearchRepository.findOne(testBooking.getId());
@@ -231,7 +236,8 @@ public class BookingResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(booking.getId().intValue())))
             .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())))
             .andExpect(jsonPath("$.[*].startTime").value(hasItem(DEFAULT_START_TIME.toString())))
-            .andExpect(jsonPath("$.[*].endTime").value(hasItem(DEFAULT_END_TIME.toString())));
+            .andExpect(jsonPath("$.[*].endTime").value(hasItem(DEFAULT_END_TIME.toString())))
+            .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())));
     }
 
     @Test
@@ -247,7 +253,8 @@ public class BookingResourceIntTest {
             .andExpect(jsonPath("$.id").value(booking.getId().intValue()))
             .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()))
             .andExpect(jsonPath("$.startTime").value(DEFAULT_START_TIME.toString()))
-            .andExpect(jsonPath("$.endTime").value(DEFAULT_END_TIME.toString()));
+            .andExpect(jsonPath("$.endTime").value(DEFAULT_END_TIME.toString()))
+            .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.toString()));
     }
 
     @Test
@@ -396,6 +403,45 @@ public class BookingResourceIntTest {
 
     @Test
     @Transactional
+    public void getAllBookingsByStatusIsEqualToSomething() throws Exception {
+        // Initialize the database
+        bookingRepository.saveAndFlush(booking);
+
+        // Get all the bookingList where status equals to DEFAULT_STATUS
+        defaultBookingShouldBeFound("status.equals=" + DEFAULT_STATUS);
+
+        // Get all the bookingList where status equals to UPDATED_STATUS
+        defaultBookingShouldNotBeFound("status.equals=" + UPDATED_STATUS);
+    }
+
+    @Test
+    @Transactional
+    public void getAllBookingsByStatusIsInShouldWork() throws Exception {
+        // Initialize the database
+        bookingRepository.saveAndFlush(booking);
+
+        // Get all the bookingList where status in DEFAULT_STATUS or UPDATED_STATUS
+        defaultBookingShouldBeFound("status.in=" + DEFAULT_STATUS + "," + UPDATED_STATUS);
+
+        // Get all the bookingList where status equals to UPDATED_STATUS
+        defaultBookingShouldNotBeFound("status.in=" + UPDATED_STATUS);
+    }
+
+    @Test
+    @Transactional
+    public void getAllBookingsByStatusIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        bookingRepository.saveAndFlush(booking);
+
+        // Get all the bookingList where status is not null
+        defaultBookingShouldBeFound("status.specified=true");
+
+        // Get all the bookingList where status is null
+        defaultBookingShouldNotBeFound("status.specified=false");
+    }
+
+    @Test
+    @Transactional
     public void getAllBookingsByCourtIsEqualToSomething() throws Exception {
         // Initialize the database
         Court court = CourtResourceIntTest.createEntity(em);
@@ -412,25 +458,6 @@ public class BookingResourceIntTest {
         defaultBookingShouldNotBeFound("courtId.equals=" + (courtId + 1));
     }
 
-
-    @Test
-    @Transactional
-    public void getAllBookingsByBookingStatusIsEqualToSomething() throws Exception {
-        // Initialize the database
-        BookingStatus bookingStatus = BookingStatusResourceIntTest.createEntity(em);
-        em.persist(bookingStatus);
-        em.flush();
-        booking.setBookingStatus(bookingStatus);
-        bookingRepository.saveAndFlush(booking);
-        Long bookingStatusId = bookingStatus.getId();
-
-        // Get all the bookingList where bookingStatus equals to bookingStatusId
-        defaultBookingShouldBeFound("bookingStatusId.equals=" + bookingStatusId);
-
-        // Get all the bookingList where bookingStatus equals to bookingStatusId + 1
-        defaultBookingShouldNotBeFound("bookingStatusId.equals=" + (bookingStatusId + 1));
-    }
-
     /**
      * Executes the search, and checks that the default entity is returned
      */
@@ -441,7 +468,8 @@ public class BookingResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(booking.getId().intValue())))
             .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())))
             .andExpect(jsonPath("$.[*].startTime").value(hasItem(DEFAULT_START_TIME.toString())))
-            .andExpect(jsonPath("$.[*].endTime").value(hasItem(DEFAULT_END_TIME.toString())));
+            .andExpect(jsonPath("$.[*].endTime").value(hasItem(DEFAULT_END_TIME.toString())))
+            .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())));
     }
 
     /**
@@ -479,7 +507,8 @@ public class BookingResourceIntTest {
         updatedBooking
             .date(UPDATED_DATE)
             .startTime(UPDATED_START_TIME)
-            .endTime(UPDATED_END_TIME);
+            .endTime(UPDATED_END_TIME)
+            .status(UPDATED_STATUS);
 
         restBookingMockMvc.perform(put("/api/bookings")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -493,6 +522,7 @@ public class BookingResourceIntTest {
         assertThat(testBooking.getDate()).isEqualTo(UPDATED_DATE);
         assertThat(testBooking.getStartTime()).isEqualTo(UPDATED_START_TIME);
         assertThat(testBooking.getEndTime()).isEqualTo(UPDATED_END_TIME);
+        assertThat(testBooking.getStatus()).isEqualTo(UPDATED_STATUS);
 
         // Validate the Booking in Elasticsearch
         Booking bookingEs = bookingSearchRepository.findOne(testBooking.getId());
@@ -552,7 +582,8 @@ public class BookingResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(booking.getId().intValue())))
             .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())))
             .andExpect(jsonPath("$.[*].startTime").value(hasItem(DEFAULT_START_TIME.toString())))
-            .andExpect(jsonPath("$.[*].endTime").value(hasItem(DEFAULT_END_TIME.toString())));
+            .andExpect(jsonPath("$.[*].endTime").value(hasItem(DEFAULT_END_TIME.toString())))
+            .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())));
     }
 
     @Test

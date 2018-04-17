@@ -12,6 +12,8 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import my.com.gofutsal.domain.enumeration.UserBookingStatus;
+
 /**
  * A Booking.
  */
@@ -39,14 +41,14 @@ public class Booking implements Serializable {
     @Column(name = "end_time", nullable = false)
     private Instant endTime;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private UserBookingStatus status;
+
     @OneToOne(optional = false)
     @NotNull
     @JoinColumn(unique = true)
     private Court court;
-
-    @OneToOne
-    @JoinColumn(unique = true)
-    private BookingStatus bookingStatus;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -96,6 +98,19 @@ public class Booking implements Serializable {
         this.endTime = endTime;
     }
 
+    public UserBookingStatus getStatus() {
+        return status;
+    }
+
+    public Booking status(UserBookingStatus status) {
+        this.status = status;
+        return this;
+    }
+
+    public void setStatus(UserBookingStatus status) {
+        this.status = status;
+    }
+
     public Court getCourt() {
         return court;
     }
@@ -107,19 +122,6 @@ public class Booking implements Serializable {
 
     public void setCourt(Court court) {
         this.court = court;
-    }
-
-    public BookingStatus getBookingStatus() {
-        return bookingStatus;
-    }
-
-    public Booking bookingStatus(BookingStatus bookingStatus) {
-        this.bookingStatus = bookingStatus;
-        return this;
-    }
-
-    public void setBookingStatus(BookingStatus bookingStatus) {
-        this.bookingStatus = bookingStatus;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
@@ -150,6 +152,7 @@ public class Booking implements Serializable {
             ", date='" + getDate() + "'" +
             ", startTime='" + getStartTime() + "'" +
             ", endTime='" + getEndTime() + "'" +
+            ", status='" + getStatus() + "'" +
             "}";
     }
 }

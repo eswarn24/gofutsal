@@ -1,6 +1,7 @@
 package my.com.gofutsal.service.dto;
 
 import java.io.Serializable;
+import my.com.gofutsal.domain.enumeration.UserBookingStatus;
 import io.github.jhipster.service.filter.BooleanFilter;
 import io.github.jhipster.service.filter.DoubleFilter;
 import io.github.jhipster.service.filter.Filter;
@@ -23,6 +24,12 @@ import io.github.jhipster.service.filter.LocalDateFilter;
  * fix type specific filters.
  */
 public class BookingCriteria implements Serializable {
+    /**
+     * Class for filtering UserBookingStatus
+     */
+    public static class UserBookingStatusFilter extends Filter<UserBookingStatus> {
+    }
+
     private static final long serialVersionUID = 1L;
 
 
@@ -34,9 +41,9 @@ public class BookingCriteria implements Serializable {
 
     private InstantFilter endTime;
 
-    private LongFilter courtId;
+    private UserBookingStatusFilter status;
 
-    private LongFilter bookingStatusId;
+    private LongFilter courtId;
 
     public BookingCriteria() {
     }
@@ -73,20 +80,20 @@ public class BookingCriteria implements Serializable {
         this.endTime = endTime;
     }
 
+    public UserBookingStatusFilter getStatus() {
+        return status;
+    }
+
+    public void setStatus(UserBookingStatusFilter status) {
+        this.status = status;
+    }
+
     public LongFilter getCourtId() {
         return courtId;
     }
 
     public void setCourtId(LongFilter courtId) {
         this.courtId = courtId;
-    }
-
-    public LongFilter getBookingStatusId() {
-        return bookingStatusId;
-    }
-
-    public void setBookingStatusId(LongFilter bookingStatusId) {
-        this.bookingStatusId = bookingStatusId;
     }
 
     @Override
@@ -96,8 +103,8 @@ public class BookingCriteria implements Serializable {
                 (date != null ? "date=" + date + ", " : "") +
                 (startTime != null ? "startTime=" + startTime + ", " : "") +
                 (endTime != null ? "endTime=" + endTime + ", " : "") +
+                (status != null ? "status=" + status + ", " : "") +
                 (courtId != null ? "courtId=" + courtId + ", " : "") +
-                (bookingStatusId != null ? "bookingStatusId=" + bookingStatusId + ", " : "") +
             "}";
     }
 

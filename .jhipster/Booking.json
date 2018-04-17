@@ -11,14 +11,6 @@
             "otherEntityField": "name",
             "ownerSide": true,
             "otherEntityRelationshipName": "booking"
-        },
-        {
-            "relationshipName": "bookingStatus",
-            "otherEntityName": "bookingStatus",
-            "relationshipType": "one-to-one",
-            "otherEntityField": "status",
-            "ownerSide": true,
-            "otherEntityRelationshipName": "booking"
         }
     ],
     "fields": [
@@ -42,6 +34,11 @@
             "fieldValidateRules": [
                 "required"
             ]
+        },
+        {
+            "fieldName": "status",
+            "fieldType": "UserBookingStatus",
+            "fieldValues": "Requested,Apporved"
         }
     ],
     "changelogDate": "20180328020448",

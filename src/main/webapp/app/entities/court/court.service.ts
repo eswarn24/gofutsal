@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { SERVER_API_URL } from '../../app.constants';
 
 import { Court } from './court.model';
-import { createRequestOption } from '../../shared';
+import {createRequestOption} from '../../shared';
 
 export type EntityResponseType = HttpResponse<Court>;
 
@@ -17,6 +17,7 @@ export class CourtService {
     constructor(private http: HttpClient) { }
 
     create(court: Court): Observable<EntityResponseType> {
+
         const copy = this.convert(court);
         return this.http.post<Court>(this.resourceUrl, copy, { observe: 'response' })
             .map((res: EntityResponseType) => this.convertResponse(res));

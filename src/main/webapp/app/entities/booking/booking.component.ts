@@ -2,11 +2,13 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
-import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
+import { JhiEventManager, JhiParseLinks, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
 
-import { Booking } from './booking.model';
-import { BookingService } from './booking.service';
+
+import { Court } from '../court/court.model';
+import { CourtService } from '../court/court.service';
 import { ITEMS_PER_PAGE, Principal } from '../../shared';
+import {Booking} from "./booking.model";
 
 @Component({
     selector: 'jhi-booking',
@@ -14,8 +16,9 @@ import { ITEMS_PER_PAGE, Principal } from '../../shared';
 })
 export class BookingComponent implements OnInit, OnDestroy {
 
-currentAccount: any;
-    bookings: Booking[];
+    currentAccount: any;
+    courts: Court[];
+    bookings:Booking[];
     error: any;
     success: any;
     eventSubscriber: Subscription;
@@ -31,7 +34,8 @@ currentAccount: any;
     reverse: any;
 
     constructor(
-        private bookingService: BookingService,
+        private courtService: CourtService,
+        private dataUtils: JhiDataUtils,
         private parseLinks: JhiParseLinks,
         private jhiAlertService: JhiAlertService,
         private principal: Principal,
@@ -52,22 +56,23 @@ currentAccount: any;
 
     loadAll() {
         if (this.currentSearch) {
-            this.bookingService.search({
+            console.log("inside loadAll");
+            this.courtService.search({
                 page: this.page - 1,
                 query: this.currentSearch,
                 size: this.itemsPerPage,
                 sort: this.sort()}).subscribe(
-                    (res: HttpResponse<Booking[]>) => this.onSuccess(res.body, res.headers),
-                    (res: HttpErrorResponse) => this.onError(res.message)
-                );
+                (res: HttpResponse<Court[]>) => this.onSuccess(res.body, res.headers),
+                (res: HttpErrorResponse) => this.onError(res.message)
+            );
             return;
         }
-        this.bookingService.query({
+        this.courtService.query({
             page: this.page - 1,
             size: this.itemsPerPage,
             sort: this.sort()}).subscribe(
-                (res: HttpResponse<Booking[]>) => this.onSuccess(res.body, res.headers),
-                (res: HttpErrorResponse) => this.onError(res.message)
+            (res: HttpResponse<Court[]>) => this.onSuccess(res.body, res.headers),
+            (res: HttpErrorResponse) => this.onError(res.message)
         );
     }
     loadPage(page: number) {
@@ -78,12 +83,12 @@ currentAccount: any;
     }
     transition() {
         this.router.navigate(['/booking'], {queryParams:
-            {
-                page: this.page,
-                size: this.itemsPerPage,
-                search: this.currentSearch,
-                sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
-            }
+                {
+                    page: this.page,
+                    size: this.itemsPerPage,
+                    search: this.currentSearch,
+                    sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
+                }
         });
         this.loadAll();
     }
@@ -111,22 +116,32 @@ currentAccount: any;
         this.loadAll();
     }
     ngOnInit() {
+        console.log("inside ngOninit");
         this.loadAll();
+        console.log("after loadAll");
         this.principal.identity().then((account) => {
             this.currentAccount = account;
         });
-        this.registerChangeInBookings();
+        this.registerChangeInCourts();
     }
 
     ngOnDestroy() {
         this.eventManager.destroy(this.eventSubscriber);
     }
 
-    trackId(index: number, item: Booking) {
+    trackId(index: number, item: Court) {
         return item.id;
     }
-    registerChangeInBookings() {
-        this.eventSubscriber = this.eventManager.subscribe('bookingListModification', (response) => this.loadAll());
+
+    byteSize(field) {
+        return this.dataUtils.byteSize(field);
+    }
+
+    openFile(contentType, field) {
+        return this.dataUtils.openFile(contentType, field);
+    }
+    registerChangeInCourts() {
+        this.eventSubscriber = this.eventManager.subscribe('courtListModification', (response) => this.loadAll());
     }
 
     sort() {
@@ -138,11 +153,13 @@ currentAccount: any;
     }
 
     private onSuccess(data, headers) {
+        console.log(data);
         this.links = this.parseLinks.parse(headers.get('link'));
         this.totalItems = headers.get('X-Total-Count');
         this.queryCount = this.totalItems;
         // this.page = pagingParams.page;
-        this.bookings = data;
+        this.courts = data;
+
     }
     private onError(error) {
         this.jhiAlertService.error(error.message, null, null);

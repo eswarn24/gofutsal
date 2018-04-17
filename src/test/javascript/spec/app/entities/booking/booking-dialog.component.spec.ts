@@ -10,7 +10,6 @@ import { BookingDialogComponent } from '../../../../../../main/webapp/app/entiti
 import { BookingService } from '../../../../../../main/webapp/app/entities/booking/booking.service';
 import { Booking } from '../../../../../../main/webapp/app/entities/booking/booking.model';
 import { CourtService } from '../../../../../../main/webapp/app/entities/court';
-import { BookingStatusService } from '../../../../../../main/webapp/app/entities/booking-status';
 
 describe('Component Tests', () => {
 
@@ -27,7 +26,6 @@ describe('Component Tests', () => {
                 declarations: [BookingDialogComponent],
                 providers: [
                     CourtService,
-                    BookingStatusService,
                     BookingService
                 ]
             })
