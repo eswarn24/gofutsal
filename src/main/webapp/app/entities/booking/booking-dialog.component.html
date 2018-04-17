@@ -1,88 +1,95 @@
 <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
 
     <div class="modal-header">
-        <h4 class="modal-title" id="myBookingLabel">Create or edit a Booking</h4>
+        <h4 class="modal-title" id="myCourtLabel">Book a Court</h4>
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                 (click)="clear()">&times;</button>
     </div>
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
-        <div class="form-group" [hidden]="!booking.id">
-            <label for="id">ID</label>
-            <input type="text" class="form-control" id="id" name="id"
-                   [(ngModel)]="booking.id" readonly />
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" for="field_date">Date</label>
-            <div class="input-group">
-                <input id="field_date" type="text" class="form-control" name="date" ngbDatepicker  #dateDp="ngbDatepicker" [(ngModel)]="booking.date"
-                required/>
-                <span class="input-group-append">
-                    <button type="button" class="btn btn-secondary" (click)="dateDp.toggle()"><i class="fa fa-calendar"></i></button>
-                </span>
-            </div>
-            <div [hidden]="!(editForm.controls.date?.dirty && editForm.controls.date?.invalid)">
-                <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.date?.errors?.required">
-                   This field is required.
-                </small>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" for="field_startTime">Start Time</label>
-            <div class="d-flex">
-                <input id="field_startTime" type="datetime-local" class="form-control" name="startTime" [(ngModel)]="booking.startTime"
-                required/>
-            </div>
-            <div [hidden]="!(editForm.controls.startTime?.dirty && editForm.controls.startTime?.invalid)">
-                <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.startTime?.errors?.required">
-                   This field is required.
-                </small>
-                <small class="form-text text-danger"
-                    [hidden]="!editForm.controls.startTime?.errors?.ZonedDateTimelocal">
-                    This field should be a date and time.
-                </small>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" for="field_endTime">End Time</label>
-            <div class="d-flex">
-                <input id="field_endTime" type="datetime-local" class="form-control" name="endTime" [(ngModel)]="booking.endTime"
-                required/>
-            </div>
-            <div [hidden]="!(editForm.controls.endTime?.dirty && editForm.controls.endTime?.invalid)">
-                <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.endTime?.errors?.required">
-                   This field is required.
-                </small>
-                <small class="form-text text-danger"
-                    [hidden]="!editForm.controls.endTime?.errors?.ZonedDateTimelocal">
-                    This field should be a date and time.
-                </small>
-            </div>
-        </div>
-       <!-- <div class="form-group">
-            <label class="form-control-label" for="field_status">Status</label>
-            <select class="form-control" name="status" [(ngModel)]="booking.status" id="field_status" >
-                <option value="Requested">Requested</option>
-                <option value="Apporved">Apporved</option>
-            </select>
-        </div>-->
 
         <div class="form-group">
-            <label class="form-control-label" for="field_court">Court</label>
-            <select class="form-control" id="field_court" name="court" [(ngModel)]="booking.court" required>
-                <option *ngIf="!editForm.value.court" [ngValue]="null" selected></option>
-                <option [ngValue]="courtOption.id === booking.court?.id ? booking.court : courtOption" *ngFor="let courtOption of courts; trackBy: trackCourtById">{{courtOption.name}}</option>
+            <label class="form-control-label" for="field_name">Name</label>
+            <input type="text" class="form-control" name="name" id="field_name"
+                   [(ngModel)]="court.name" required/>
+            <div [hidden]="!(editForm.controls.name?.dirty && editForm.controls.name?.invalid)">
+                <small class="form-text text-danger"
+                       [hidden]="!editForm.controls.name?.errors?.required">
+                    This field is required.
+                </small>
+            </div>
+        </div>
+        <!--  <div class="form-group">
+              <label class="form-control-label" for="field_rate">Rate</label>
+              <input type="text" class="form-control" name="rate" id="field_rate"
+                     [(ngModel)]="court.rate" required/>
+              <div [hidden]="!(editForm.controls.rate?.dirty && editForm.controls.rate?.invalid)">
+                  <small class="form-text text-danger"
+                         [hidden]="!editForm.controls.rate?.errors?.required">
+                      This field is required.
+                  </small>
+              </div>
+          </div>-->
+       <!-- <div class="form-group">
+            <label class="form-control-label" for="field_region">Region</label>
+            <select class="form-control" name="region"  [(ngModel)]="court.region" id="field_region" (ngModelChange)="searchcourt(field_region)" required>
+                <option value="PetalingJaya">PetalingJaya</option>
+                <option value="KelanaJaya">KelanaJaya</option>
+                <option value="PutraJaya">PutraJaya</option>
+                <option value="Kualalumpur">Kualalumpur</option>
+                <option value="SubangJaya">SubangJaya</option>
+                <option value="Damansara">Damansara</option>
+                <option value="USJ">USJ</option>
+                <option value="Puchong">Puchong</option>
+                <option value="Nilai">Nilai</option>
+                <option value="BukitBintang">BukitBintang</option>
             </select>
+            <div [hidden]="!(editForm.controls.region?.dirty && editForm.controls.region?.invalid)">
+                <small class="form-text text-danger"
+                       [hidden]="!editForm.controls.region?.errors?.required">
+                    This field is required.
+                </small>
+            </div>
+        </div>-->
+       <!-- <div class="form-group">
+            <label class="form-control-label" for="field_courtImage">Court Image</label>
+            <div>
+                <img [src]="'data:' + court.courtImageContentType + ';base64,' + court.courtImage" style="max-height: 100px;" *ngIf="court.courtImage" alt="court image"/>
+                <div *ngIf="court.courtImage" class="form-text text-danger clearfix">
+                    <span class="pull-left">{{court.courtImageContentType}}, {{byteSize(court.courtImage)}}</span>
+                    <button type="button" (click)="clearInputImage('courtImage', 'courtImageContentType', 'fileImage')" class="btn btn-secondary btn-xs pull-right">
+                        <span class="fa fa-times"></span>
+                    </button>
+                </div>
+                <input type="file" id="file_courtImage" (change)="setFileData($event, court, 'courtImage', true)" accept="image/*"/>
+            </div>
+            <input type="hidden" class="form-control" name="courtImage" id="field_courtImage"
+                   [(ngModel)]="court.courtImage" />
+            <input type="hidden" class="form-control" name="courtImageContentType" id="field_courtImageContentType"
+                   [(ngModel)]="court.courtImageContentType" />
         </div>
-        <div [hidden]="!(editForm.controls.court?.dirty && editForm.controls.court?.invalid)">
-            <small class="form-text text-danger"
-                [hidden]="!editForm.controls.court?.errors?.required">
-                This field is required.
-            </small>
-        </div>
+-->
+       <!-- <div class="form-group">
+            <label class="form-control-label" for="field_courtType">Court Type</label>
+            <select class="form-control" id="field_courtType" name="courtType" [(ngModel)]="court.courtType">
+                <option [ngValue]="null"></option>
+                <option [ngValue]="courtTypeOption.id === court.courtType?.id ? court.courtType : courtTypeOption" *ngFor="let courtTypeOption of courttypes; trackBy: trackCourtTypeById">{{courtTypeOption.type}}</option>
+            </select>
+        </div>-->
+        <!-- <div class="form-group">
+             <label class="form-control-label" for="field_user">User</label>
+             <select class="form-control" id="field_user" name="user" [(ngModel)]="court.user" >
+                 <option [ngValue]="null"></option>
+                 <option [ngValue]="userOption.id === court.user?.id ? court.user : userOption" *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.login}}</option>
+             </select>
+         </div>-->
+        <!--<div class="form-group">
+            <label class="form-control-label" for="field_courtLocation">Court Location</label>
+            <select class="form-control" id="field_courtLocation" name="courtLocation" [(ngModel)]="court.courtLocation" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="courtLocationOption.id === court.courtLocation?.id ? court.courtLocation : courtLocationOption" *ngFor="let courtLocationOption of courtlocations; trackBy: trackCourtLocationById">{{courtLocationOption.address}}</option>
+            </select>
+        </div>-->
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">

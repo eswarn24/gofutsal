@@ -1,0 +1,16 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="localadmin (generated)" id="1523982150896-1">
+        <addColumn tableName="court_location">
+            <column name="center" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="localadmin (generated)" id="1523982150896-2">
+        <dropForeignKeyConstraint baseTableName="court" constraintName="FKg5otg6mi8ai7ur74mlfjm6g0i"/>
+    </changeSet>
+    <changeSet author="localadmin (generated)" id="1523982150896-3">
+        <dropColumn columnName="court_location_id" tableName="court"/>
+    </changeSet>
+</databaseChangeLog>

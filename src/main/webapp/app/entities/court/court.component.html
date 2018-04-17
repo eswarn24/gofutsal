@@ -35,8 +35,8 @@
             <th jhiSortBy="region"><span>Region</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="courtImage"><span>Court Image</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="courtType.type"><span>Court Type</span> <span class="fa fa-sort"></span></th>
-           <!-- <th jhiSortBy="user.login"><span>User</span> <span class="fa fa-sort"></span></th>-->
-            <th jhiSortBy="courtLocation.address"><span>Court Location</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="user.login"><span>User</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="center.center"><span>Center</span> <span class="fa fa-sort"></span></th>
             <th></th>
             </tr>
             </thead>
@@ -44,7 +44,7 @@
             <tr *ngFor="let court of courts ;trackBy: trackId">
                 <td><a [routerLink]="['../court', court.id ]">{{court.id}}</a></td>
                 <td>{{court.name}}</td>
-                <td>{{court.rate}}</td>cour
+                <td>{{court.rate}}</td>
                 <td>{{court.region}}</td>
                 <td>
                     <a *ngIf="court.courtImage" (click)="openFile(court.courtImageContentType, court.courtImage)">
@@ -58,11 +58,11 @@
                     </div>
                 </td>
                 <td>
-                   <!-- {{court.user?.login}}-->
+                    {{court.user?.login}}
                 </td>
                 <td>
-                    <div *ngIf="court.courtLocation">
-                        <a [routerLink]="['../court-location', court.courtLocation?.id ]" >{{court.courtLocation?.address}}</a>
+                    <div *ngIf="court.center">
+                        <a [routerLink]="['../court-location', court.center?.id ]" >{{court.center?.center}}</a>
                     </div>
                 </td>
                 <td class="text-right">

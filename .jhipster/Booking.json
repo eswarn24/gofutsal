@@ -22,23 +22,24 @@
             ]
         },
         {
-            "fieldName": "startTime",
-            "fieldType": "Instant",
-            "fieldValidateRules": [
-                "required"
-            ]
-        },
-        {
-            "fieldName": "endTime",
-            "fieldType": "Instant",
-            "fieldValidateRules": [
-                "required"
-            ]
-        },
-        {
             "fieldName": "status",
             "fieldType": "UserBookingStatus",
             "fieldValues": "Requested,Apporved"
+        },
+        {
+            "fieldName": "time",
+            "fieldType": "Instant",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "duration",
+            "fieldType": "BookingDuration",
+            "fieldValues": " one,onehalf,two,twohalf,three,threehalf,four,fourhalf,five",
+            "fieldValidateRules": [
+                "required"
+            ]
         }
     ],
     "changelogDate": "20180328020448",

@@ -54,8 +54,9 @@ public class Court implements Serializable {
     @ManyToOne
     private User user;
 
-    @ManyToOne
-    private CourtLocation courtLocation;
+    @ManyToOne(optional = false)
+    @NotNull
+    private CourtLocation center;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -157,17 +158,17 @@ public class Court implements Serializable {
         this.user = user;
     }
 
-    public CourtLocation getCourtLocation() {
-        return courtLocation;
+    public CourtLocation getCenter() {
+        return center;
     }
 
-    public Court courtLocation(CourtLocation courtLocation) {
-        this.courtLocation = courtLocation;
+    public Court center(CourtLocation courtLocation) {
+        this.center = courtLocation;
         return this;
     }
 
-    public void setCourtLocation(CourtLocation courtLocation) {
-        this.courtLocation = courtLocation;
+    public void setCenter(CourtLocation courtLocation) {
+        this.center = courtLocation;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

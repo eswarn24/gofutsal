@@ -14,6 +14,8 @@ import java.util.Objects;
 
 import my.com.gofutsal.domain.enumeration.UserBookingStatus;
 
+import my.com.gofutsal.domain.enumeration.BookingDuration;
+
 /**
  * A Booking.
  */
@@ -33,17 +35,18 @@ public class Booking implements Serializable {
     @Column(name = "jhi_date", nullable = false)
     private LocalDate date;
 
-    @NotNull
-    @Column(name = "start_time", nullable = false)
-    private Instant startTime;
-
-    @NotNull
-    @Column(name = "end_time", nullable = false)
-    private Instant endTime;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private UserBookingStatus status;
+
+    @NotNull
+    @Column(name = "jhi_time", nullable = false)
+    private Instant time;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "duration", nullable = false)
+    private BookingDuration duration;
 
     @OneToOne(optional = false)
     @NotNull
@@ -72,32 +75,6 @@ public class Booking implements Serializable {
         this.date = date;
     }
 
-    public Instant getStartTime() {
-        return startTime;
-    }
-
-    public Booking startTime(Instant startTime) {
-        this.startTime = startTime;
-        return this;
-    }
-
-    public void setStartTime(Instant startTime) {
-        this.startTime = startTime;
-    }
-
-    public Instant getEndTime() {
-        return endTime;
-    }
-
-    public Booking endTime(Instant endTime) {
-        this.endTime = endTime;
-        return this;
-    }
-
-    public void setEndTime(Instant endTime) {
-        this.endTime = endTime;
-    }
-
     public UserBookingStatus getStatus() {
         return status;
     }
@@ -109,6 +86,32 @@ public class Booking implements Serializable {
 
     public void setStatus(UserBookingStatus status) {
         this.status = status;
+    }
+
+    public Instant getTime() {
+        return time;
+    }
+
+    public Booking time(Instant time) {
+        this.time = time;
+        return this;
+    }
+
+    public void setTime(Instant time) {
+        this.time = time;
+    }
+
+    public BookingDuration getDuration() {
+        return duration;
+    }
+
+    public Booking duration(BookingDuration duration) {
+        this.duration = duration;
+        return this;
+    }
+
+    public void setDuration(BookingDuration duration) {
+        this.duration = duration;
     }
 
     public Court getCourt() {
@@ -150,9 +153,9 @@ public class Booking implements Serializable {
         return "Booking{" +
             "id=" + getId() +
             ", date='" + getDate() + "'" +
-            ", startTime='" + getStartTime() + "'" +
-            ", endTime='" + getEndTime() + "'" +
             ", status='" + getStatus() + "'" +
+            ", time='" + getTime() + "'" +
+            ", duration='" + getDuration() + "'" +
             "}";
     }
 }

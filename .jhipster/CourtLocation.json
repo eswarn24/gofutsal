@@ -20,6 +20,13 @@
             "fieldName": "state",
             "fieldType": "State",
             "fieldValues": "Johor,Kedah,Kelantan,Melaka,Negeri Sembilan,Pahang,Penang,Perak,Perlis,Sabah,Sarawak,Selangor,Terengganu,Kuala Lumpur,Labuan,Putrajaya"
+        },
+        {
+            "fieldName": "center",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
         }
     ],
     "changelogDate": "20180325102441",

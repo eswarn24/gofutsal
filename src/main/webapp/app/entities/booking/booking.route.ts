@@ -62,7 +62,7 @@ export const bookingPopupRoute: Routes = [
         canActivate: [UserRouteAccessService]
     },*/
     {
-        path: 'booking/:id/create',
+        path: 'booking/:id/new',
         component: BookingPopupComponent,
         data: {
             authorities: ['ROLE_USER'],

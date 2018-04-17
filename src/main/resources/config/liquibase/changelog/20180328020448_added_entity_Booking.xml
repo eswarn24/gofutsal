@@ -26,24 +26,23 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="start_time" type="timestamp">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="end_time" type="timestamp">
-                <constraints nullable="false" />
-            </column>
-
             <column name="status" type="varchar(255)">
                 <constraints nullable="true" />
+            </column>
+
+            <column name="jhi_time" type="timestamp">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="duration" type="varchar(255)">
+                <constraints nullable="false" />
             </column>
             <column name="court_id" type="bigint">
                 <constraints unique="true" nullable="false" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        <dropDefaultValue tableName="booking" columnName="start_time" columnDataType="datetime"/>
-        <dropDefaultValue tableName="booking" columnName="end_time" columnDataType="datetime"/>
+        <dropDefaultValue tableName="booking" columnName="jhi_time" columnDataType="datetime"/>
         
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->

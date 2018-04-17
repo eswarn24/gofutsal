@@ -31,14 +31,14 @@
                 <a [routerLink]="['/court-type', court.courtType?.id]">{{court.courtType?.type}}</a>
             </div>
         </dd>
-        <!--<dt><span>User</span></dt>-->
-        <!--<dd>-->
-            <!--{{court.user?.login}}-->
-        <!--</dd>-->
-        <dt><span>Court Location</span></dt>
+        <dt><span>User</span></dt>
         <dd>
-            <div *ngIf="court.courtLocation">
-                <a [routerLink]="['/court-location', court.courtLocation?.id]">{{court.courtLocation?.address}}</a>
+            {{court.user?.login}}
+        </dd>
+        <dt><span>Center</span></dt>
+        <dd>
+            <div *ngIf="court.center">
+                <a [routerLink]="['/court-location', court.center?.id]">{{court.center?.center}}</a>
             </div>
         </dd>
     </dl>

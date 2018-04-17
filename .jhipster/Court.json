@@ -18,10 +18,13 @@
             "otherEntityRelationshipName": "court"
         },
         {
-            "relationshipName": "courtLocation",
+            "relationshipName": "center",
             "otherEntityName": "courtLocation",
             "relationshipType": "many-to-one",
-            "otherEntityField": "address"
+            "relationshipValidateRules": [
+                "required"
+            ],
+            "otherEntityField": "center"
         }
     ],
     "fields": [

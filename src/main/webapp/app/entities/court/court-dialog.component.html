@@ -80,19 +80,25 @@
                 <option [ngValue]="courtTypeOption.id === court.courtType?.id ? court.courtType : courtTypeOption" *ngFor="let courtTypeOption of courttypes; trackBy: trackCourtTypeById">{{courtTypeOption.type}}</option>
             </select>
         </div>
-       <!-- <div class="form-group">
+        <div class="form-group">
             <label class="form-control-label" for="field_user">User</label>
             <select class="form-control" id="field_user" name="user" [(ngModel)]="court.user" >
                 <option [ngValue]="null"></option>
                 <option [ngValue]="userOption.id === court.user?.id ? court.user : userOption" *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.login}}</option>
             </select>
-        </div>-->
+        </div>
         <div class="form-group">
-            <label class="form-control-label" for="field_courtLocation">Court Location</label>
-            <select class="form-control" id="field_courtLocation" name="courtLocation" [(ngModel)]="court.courtLocation" >
-                <option [ngValue]="null"></option>
-                <option [ngValue]="courtLocationOption.id === court.courtLocation?.id ? court.courtLocation : courtLocationOption" *ngFor="let courtLocationOption of courtlocations; trackBy: trackCourtLocationById">{{courtLocationOption.address}}</option>
+            <label class="form-control-label" for="field_center">Center</label>
+            <select class="form-control" id="field_center" name="center" [(ngModel)]="court.center"  required>
+                <option *ngIf="!editForm.value.center" [ngValue]="null" selected></option>
+                <option [ngValue]="courtLocationOption.id === court.center?.id ? court.center : courtLocationOption" *ngFor="let courtLocationOption of courtlocations; trackBy: trackCourtLocationById">{{courtLocationOption.center}}</option>
             </select>
+        </div>
+        <div [hidden]="!(editForm.controls.center?.dirty && editForm.controls.center?.invalid)">
+            <small class="form-text text-danger"
+                [hidden]="!editForm.controls.center?.errors?.required">
+                This field is required.
+            </small>
         </div>
     </div>
     <div class="modal-footer">

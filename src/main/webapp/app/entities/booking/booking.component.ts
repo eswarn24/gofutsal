@@ -115,6 +115,21 @@ export class BookingComponent implements OnInit, OnDestroy {
         }]);
         this.loadAll();
     }
+
+    searchcourt(query) {
+        if (!query) {
+            return this.clear();
+        }
+        this.page = 0;
+        this.currentSearch = query;
+        this.router.navigate(['/booking', {
+            search: this.currentSearch,
+            page: this.page,
+            sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
+        }]);
+        this.loadAll();
+    }
+
     ngOnInit() {
         console.log("inside ngOninit");
         this.loadAll();

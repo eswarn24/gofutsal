@@ -4,11 +4,11 @@
 
     </h2>
     <jhi-alert></jhi-alert>
-    <div class="row">
+   <!-- <div class="row">
         <div class="col-sm-12">
             <form name="searchForm" class="form-inline">
                 <div class="input-group w-100 mt-3">
-                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="Search Bookings">
+                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="Enter location">
                     <button class="input-group-append btn btn-info" (click)="search(currentSearch)">
                         <span class="fa fa-search"></span>
                     </button>
@@ -18,7 +18,31 @@
                 </div>
             </form>
         </div>
+    </div>-->
+    <br/>
+    <div class="row">
+    <div class="col-sm-12">
+        <form name="searchCourt" class="form-inline">
+            <div class="form-group">
+                <label class="form-control-label" for="region">Select any region </label>
+                <select class="form-control" name="region" [(ngModel)]="currentSearch" id="region" (ngModelChange)="searchcourt(currentSearch)" required>
+                    <option value="PetalingJaya">PetalingJaya</option>
+                    <option value="KelanaJaya">KelanaJaya</option>
+                    <option value="PutraJaya">PutraJaya</option>
+                    <option value="Kualalumpur">Kualalumpur</option>
+                    <option value="SubangJaya">SubangJaya</option>
+                    <option value="Damansara">Damansara</option>
+                    <option value="USJ">USJ</option>
+                    <option value="Puchong">Puchong</option>
+                    <option value="Nilai">Nilai</option>
+                    <option value="BukitBintang">BukitBintang</option>
+                </select>
+
+            </div>
+        </form>
     </div>
+    </div>
+    <!--<div  *ngIf="currentSearch != ''"><h1>Selected</h1></div>-->
     <br/>
     <div class="table-responsive" *ngIf="courts">
         <table class="table table-striped">
@@ -31,7 +55,7 @@
                <!-- <th jhiSortBy="courtImage"><span>Court Image</span> <span class="fa fa-sort"></span></th>-->
                 <th jhiSortBy="courtType.type"><span>Court Type</span> <span class="fa fa-sort"></span></th>
               <!--  <th jhiSortBy="user.login"><span>User</span> <span class="fa fa-sort"></span></th>-->
-                <th jhiSortBy="courtLocation.address"><span>Court Location</span> <span class="fa fa-sort"></span></th>
+                <th jhiSortBy="courtLocation.address"><span>Futsal Center</span> <span class="fa fa-sort"></span></th>
                 <th></th>
             </tr>
             </thead>
@@ -56,6 +80,9 @@
                 <td>
                     {{court.courtType?.type}}
                 </td>
+                <td>
+                    {{court.center?.center}}
+                </td>
                <!-- <td>
                     {{court.user?.login}}
                 </td>-->
@@ -68,7 +95,7 @@
                     <div class="btn-group flex-btn-group-container">
 
                         <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'booking/'+ court.id + '/create'} }]"
+                                [routerLink]="['/', { outlets: { popup: 'booking/'+ court.id + '/new'} }]"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
                                 class="btn btn-primary float-right jh-create-entity create-booking">

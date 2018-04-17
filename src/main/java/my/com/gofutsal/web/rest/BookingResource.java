@@ -2,7 +2,6 @@ package my.com.gofutsal.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import my.com.gofutsal.domain.Booking;
-import my.com.gofutsal.domain.enumeration.UserBookingStatus;
 import my.com.gofutsal.service.BookingService;
 import my.com.gofutsal.web.rest.errors.BadRequestAlertException;
 import my.com.gofutsal.web.rest.util.HeaderUtil;
@@ -60,7 +59,6 @@ public class BookingResource {
     @Timed
     public ResponseEntity<Booking> createBooking(@Valid @RequestBody Booking booking) throws URISyntaxException {
         log.debug("REST request to save Booking : {}", booking);
-        booking.setStatus(UserBookingStatus.Requested);
         if (booking.getId() != null) {
             throw new BadRequestAlertException("A new booking cannot already have an ID", ENTITY_NAME, "idexists");
         }

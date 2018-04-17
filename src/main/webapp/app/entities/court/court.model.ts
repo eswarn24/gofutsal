@@ -23,7 +23,7 @@ export class Court implements BaseEntity {
         public courtImage?: any,
         public courtType?: BaseEntity,
         public user?: User,
-        public courtLocation?: BaseEntity,
+        public center?: BaseEntity,
     ) {
     }
 }

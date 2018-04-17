@@ -4,12 +4,14 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
+import { JhiEventManager, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
 
 import { Booking } from './booking.model';
 import { BookingPopupService } from './booking-popup.service';
 import { BookingService } from './booking.service';
 import { Court, CourtService } from '../court';
+
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
     selector: 'jhi-booking-dialog',
@@ -19,20 +21,61 @@ export class BookingDialogComponent implements OnInit {
 
     booking: Booking;
     isSaving: boolean;
-
-    courts: Court[];
+    court: Court;/*
+    courts: Court[];*/
     dateDp: any;
+
+    private subscription: Subscription;
+    private eventSubscriber: Subscription;
 
     constructor(
         public activeModal: NgbActiveModal,
         private jhiAlertService: JhiAlertService,
         private bookingService: BookingService,
         private courtService: CourtService,
-        private eventManager: JhiEventManager
+        private eventManager: JhiEventManager,
+        private dataUtils: JhiDataUtils,
+        private route: ActivatedRoute
     ) {
     }
 
     ngOnInit() {
+        this.subscription = this.route.params.subscribe((params) => {
+            this.load(params['id']);
+        });
+        this.registerChangeInCourts();
+    }
+
+    load(id) {
+        this.courtService.find(id)
+            .subscribe((courtResponse: HttpResponse<Court>) => {
+                this.court = courtResponse.body;
+            });
+    }
+    byteSize(field) {
+        return this.dataUtils.byteSize(field);
+    }
+
+    openFile(contentType, field) {
+        return this.dataUtils.openFile(contentType, field);
+    }
+    previousState() {
+        window.history.back();
+    }
+
+    ngOnDestroy() {
+        this.subscription.unsubscribe();
+        this.eventManager.destroy(this.eventSubscriber);
+    }
+
+    registerChangeInCourts() {
+        this.eventSubscriber = this.eventManager.subscribe(
+            'courtListModification',
+            (response) => this.load(this.court.id)
+        );
+    }
+
+   /* ngOnInit() {
         this.isSaving = false;
         this.courtService
             .query({filter: 'booking-is-null'})
@@ -47,11 +90,13 @@ export class BookingDialogComponent implements OnInit {
                         }, (subRes: HttpErrorResponse) => this.onError(subRes.message));
                 }
             }, (res: HttpErrorResponse) => this.onError(res.message));
-    }
+    }*/
 
     clear() {
         this.activeModal.dismiss('cancel');
     }
+
+
 
     save() {
         this.isSaving = true;

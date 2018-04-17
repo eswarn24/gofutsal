@@ -25,6 +25,7 @@ export class CourtLocation implements BaseEntity {
         public address?: string,
         public country?: string,
         public state?: State,
+        public center?: string,
     ) {
     }
 }

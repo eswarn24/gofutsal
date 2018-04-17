@@ -20,9 +20,9 @@
                                  referencedColumnNames="id"
                                  referencedTableName="jhi_user"/>
 
-        <addForeignKeyConstraint baseColumnNames="court_location_id"
+        <addForeignKeyConstraint baseColumnNames="center_id"
                                  baseTableName="court"
-                                 constraintName="fk_court_court_location_id"
+                                 constraintName="fk_court_center_id"
                                  referencedColumnNames="id"
                                  referencedTableName="court_location"/>
 

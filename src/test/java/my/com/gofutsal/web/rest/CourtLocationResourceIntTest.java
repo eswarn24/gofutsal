@@ -50,6 +50,9 @@ public class CourtLocationResourceIntTest {
     private static final State DEFAULT_STATE = State.Johor;
     private static final State UPDATED_STATE = State.Kedah;
 
+    private static final String DEFAULT_CENTER = "AAAAAAAAAA";
+    private static final String UPDATED_CENTER = "BBBBBBBBBB";
+
     @Autowired
     private CourtLocationRepository courtLocationRepository;
 
@@ -96,7 +99,8 @@ public class CourtLocationResourceIntTest {
         CourtLocation courtLocation = new CourtLocation()
             .address(DEFAULT_ADDRESS)
             .country(DEFAULT_COUNTRY)
-            .state(DEFAULT_STATE);
+            .state(DEFAULT_STATE)
+            .center(DEFAULT_CENTER);
         return courtLocation;
     }
 
@@ -124,6 +128,7 @@ public class CourtLocationResourceIntTest {
         assertThat(testCourtLocation.getAddress()).isEqualTo(DEFAULT_ADDRESS);
         assertThat(testCourtLocation.getCountry()).isEqualTo(DEFAULT_COUNTRY);
         assertThat(testCourtLocation.getState()).isEqualTo(DEFAULT_STATE);
+        assertThat(testCourtLocation.getCenter()).isEqualTo(DEFAULT_CENTER);
 
         // Validate the CourtLocation in Elasticsearch
         CourtLocation courtLocationEs = courtLocationSearchRepository.findOne(testCourtLocation.getId());
@@ -187,6 +192,24 @@ public class CourtLocationResourceIntTest {
 
     @Test
     @Transactional
+    public void checkCenterIsRequired() throws Exception {
+        int databaseSizeBeforeTest = courtLocationRepository.findAll().size();
+        // set the field null
+        courtLocation.setCenter(null);
+
+        // Create the CourtLocation, which fails.
+
+        restCourtLocationMockMvc.perform(post("/api/court-locations")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(courtLocation)))
+            .andExpect(status().isBadRequest());
+
+        List<CourtLocation> courtLocationList = courtLocationRepository.findAll();
+        assertThat(courtLocationList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllCourtLocations() throws Exception {
         // Initialize the database
         courtLocationRepository.saveAndFlush(courtLocation);
@@ -198,7 +221,8 @@ public class CourtLocationResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(courtLocation.getId().intValue())))
             .andExpect(jsonPath("$.[*].address").value(hasItem(DEFAULT_ADDRESS.toString())))
             .andExpect(jsonPath("$.[*].country").value(hasItem(DEFAULT_COUNTRY.toString())))
-            .andExpect(jsonPath("$.[*].state").value(hasItem(DEFAULT_STATE.toString())));
+            .andExpect(jsonPath("$.[*].state").value(hasItem(DEFAULT_STATE.toString())))
+            .andExpect(jsonPath("$.[*].center").value(hasItem(DEFAULT_CENTER.toString())));
     }
 
     @Test
@@ -214,7 +238,8 @@ public class CourtLocationResourceIntTest {
             .andExpect(jsonPath("$.id").value(courtLocation.getId().intValue()))
             .andExpect(jsonPath("$.address").value(DEFAULT_ADDRESS.toString()))
             .andExpect(jsonPath("$.country").value(DEFAULT_COUNTRY.toString()))
-            .andExpect(jsonPath("$.state").value(DEFAULT_STATE.toString()));
+            .andExpect(jsonPath("$.state").value(DEFAULT_STATE.toString()))
+            .andExpect(jsonPath("$.center").value(DEFAULT_CENTER.toString()));
     }
 
     @Test
@@ -240,7 +265,8 @@ public class CourtLocationResourceIntTest {
         updatedCourtLocation
             .address(UPDATED_ADDRESS)
             .country(UPDATED_COUNTRY)
-            .state(UPDATED_STATE);
+            .state(UPDATED_STATE)
+            .center(UPDATED_CENTER);
 
         restCourtLocationMockMvc.perform(put("/api/court-locations")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -254,6 +280,7 @@ public class CourtLocationResourceIntTest {
         assertThat(testCourtLocation.getAddress()).isEqualTo(UPDATED_ADDRESS);
         assertThat(testCourtLocation.getCountry()).isEqualTo(UPDATED_COUNTRY);
         assertThat(testCourtLocation.getState()).isEqualTo(UPDATED_STATE);
+        assertThat(testCourtLocation.getCenter()).isEqualTo(UPDATED_CENTER);
 
         // Validate the CourtLocation in Elasticsearch
         CourtLocation courtLocationEs = courtLocationSearchRepository.findOne(testCourtLocation.getId());
@@ -313,7 +340,8 @@ public class CourtLocationResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(courtLocation.getId().intValue())))
             .andExpect(jsonPath("$.[*].address").value(hasItem(DEFAULT_ADDRESS.toString())))
             .andExpect(jsonPath("$.[*].country").value(hasItem(DEFAULT_COUNTRY.toString())))
-            .andExpect(jsonPath("$.[*].state").value(hasItem(DEFAULT_STATE.toString())));
+            .andExpect(jsonPath("$.[*].state").value(hasItem(DEFAULT_STATE.toString())))
+            .andExpect(jsonPath("$.[*].center").value(hasItem(DEFAULT_CENTER.toString())));
     }
 
     @Test

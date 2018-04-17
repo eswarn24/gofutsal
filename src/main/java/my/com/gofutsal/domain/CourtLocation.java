@@ -39,6 +39,10 @@ public class CourtLocation implements Serializable {
     @Column(name = "state")
     private State state;
 
+    @NotNull
+    @Column(name = "center", nullable = false)
+    private String center;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -86,6 +90,19 @@ public class CourtLocation implements Serializable {
     public void setState(State state) {
         this.state = state;
     }
+
+    public String getCenter() {
+        return center;
+    }
+
+    public CourtLocation center(String center) {
+        this.center = center;
+        return this;
+    }
+
+    public void setCenter(String center) {
+        this.center = center;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -115,6 +132,7 @@ public class CourtLocation implements Serializable {
             ", address='" + getAddress() + "'" +
             ", country='" + getCountry() + "'" +
             ", state='" + getState() + "'" +
+            ", center='" + getCenter() + "'" +
             "}";
     }
 }

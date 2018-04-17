@@ -2,6 +2,7 @@ package my.com.gofutsal.service.dto;
 
 import java.io.Serializable;
 import my.com.gofutsal.domain.enumeration.UserBookingStatus;
+import my.com.gofutsal.domain.enumeration.BookingDuration;
 import io.github.jhipster.service.filter.BooleanFilter;
 import io.github.jhipster.service.filter.DoubleFilter;
 import io.github.jhipster.service.filter.Filter;
@@ -30,6 +31,12 @@ public class BookingCriteria implements Serializable {
     public static class UserBookingStatusFilter extends Filter<UserBookingStatus> {
     }
 
+    /**
+     * Class for filtering BookingDuration
+     */
+    public static class BookingDurationFilter extends Filter<BookingDuration> {
+    }
+
     private static final long serialVersionUID = 1L;
 
 
@@ -37,11 +44,11 @@ public class BookingCriteria implements Serializable {
 
     private LocalDateFilter date;
 
-    private InstantFilter startTime;
-
-    private InstantFilter endTime;
-
     private UserBookingStatusFilter status;
+
+    private InstantFilter time;
+
+    private BookingDurationFilter duration;
 
     private LongFilter courtId;
 
@@ -64,28 +71,28 @@ public class BookingCriteria implements Serializable {
         this.date = date;
     }
 
-    public InstantFilter getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(InstantFilter startTime) {
-        this.startTime = startTime;
-    }
-
-    public InstantFilter getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(InstantFilter endTime) {
-        this.endTime = endTime;
-    }
-
     public UserBookingStatusFilter getStatus() {
         return status;
     }
 
     public void setStatus(UserBookingStatusFilter status) {
         this.status = status;
+    }
+
+    public InstantFilter getTime() {
+        return time;
+    }
+
+    public void setTime(InstantFilter time) {
+        this.time = time;
+    }
+
+    public BookingDurationFilter getDuration() {
+        return duration;
+    }
+
+    public void setDuration(BookingDurationFilter duration) {
+        this.duration = duration;
     }
 
     public LongFilter getCourtId() {
@@ -101,9 +108,9 @@ public class BookingCriteria implements Serializable {
         return "BookingCriteria{" +
                 (id != null ? "id=" + id + ", " : "") +
                 (date != null ? "date=" + date + ", " : "") +
-                (startTime != null ? "startTime=" + startTime + ", " : "") +
-                (endTime != null ? "endTime=" + endTime + ", " : "") +
                 (status != null ? "status=" + status + ", " : "") +
+                (time != null ? "time=" + time + ", " : "") +
+                (duration != null ? "duration=" + duration + ", " : "") +
                 (courtId != null ? "courtId=" + courtId + ", " : "") +
             "}";
     }

@@ -3,6 +3,7 @@ package my.com.gofutsal.web.rest;
 import my.com.gofutsal.GofutsalApp;
 
 import my.com.gofutsal.domain.Court;
+import my.com.gofutsal.domain.CourtLocation;
 import my.com.gofutsal.repository.CourtRepository;
 import my.com.gofutsal.service.CourtService;
 import my.com.gofutsal.repository.search.CourtSearchRepository;
@@ -105,6 +106,11 @@ public class CourtResourceIntTest {
             .region(DEFAULT_REGION)
             .courtImage(DEFAULT_COURT_IMAGE)
             .courtImageContentType(DEFAULT_COURT_IMAGE_CONTENT_TYPE);
+        // Add required entity
+        CourtLocation center = CourtLocationResourceIntTest.createEntity(em);
+        em.persist(center);
+        em.flush();
+        court.setCenter(center);
         return court;
     }
 
