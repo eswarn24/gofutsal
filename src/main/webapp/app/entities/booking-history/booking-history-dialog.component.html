@@ -1,4 +1,4 @@
-<dl class="row-md jh-entity-details">
+<!-- <dl class="row-md jh-entity-details">
     <dt><span>Name</span></dt>
     <dd>
         <span>{{court.name}}</span>
@@ -7,14 +7,14 @@
     <dd>
         <span>{{court.rate}}</span>
     </dd>
-</dl>
+</dl>-->
 <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
 
-    <div class="modal-header">
+   <!-- <div class="modal-header">
         <h4 class="modal-title" id="myBookingLabel">Create a Booking</h4>
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                 (click)="clear()">&times;</button>
-    </div>
+    </div>-->
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
         <div class="form-group" [hidden]="!booking.id">
