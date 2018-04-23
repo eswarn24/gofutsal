@@ -55,8 +55,8 @@ public class CourtService {
     public Page<Court> findAll(Pageable pageable) {
         log.debug("Request to get all Courts");
         //return courtRepository.findByUserIsCurrentUser();
-       //return courtRepository.findAll(pageable);
-        return courtRepository.findByUserLogin(SecurityUtils.getCurrentUserLogin(),pageable);
+       return courtRepository.findAll(pageable);
+       // return courtRepository.findByUserLogin(SecurityUtils.getCurrentUserLogin(),pageable);
     }
 
     /**
