@@ -14,5 +14,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="court"/>
 
+        <addForeignKeyConstraint baseColumnNames="booking_user_id"
+                                 baseTableName="booking"
+                                 constraintName="fk_booking_booking_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="jhi_user"/>
+
     </changeSet>
 </databaseChangeLog>

@@ -40,10 +40,9 @@ export class BookingDialogComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.subscription = this.route.params.subscribe((params) => {
-            this.load(params['id']);
-        });
-        this.registerChangeInCourts();
+
+        console.log("onInit from BookingHistoryDialogComponent");
+        this.booking.bookingTime="1";
     }
 
     load(id) {
@@ -75,7 +74,7 @@ export class BookingDialogComponent implements OnInit {
         );
     }
 
-   /* ngOnInit() {
+    /*ngOnInit() {
         this.isSaving = false;
         this.courtService
             .query({filter: 'booking-is-null'})
@@ -99,14 +98,17 @@ export class BookingDialogComponent implements OnInit {
 
 
     save() {
+        console.log("inside save() from BookingHistoryComponent"+this.booking.bookingHour);
         this.isSaving = true;
-        if (this.booking.id !== undefined) {
+        this.booking.court=this.court;
+        console.log(this.booking.court.id);
+        /*if (this.booking.id !== undefined) {
             this.subscribeToSaveResponse(
                 this.bookingService.update(this.booking));
-        } else {
+        } else*/
             this.subscribeToSaveResponse(
                 this.bookingService.create(this.booking));
-        }
+
     }
 
     private subscribeToSaveResponse(result: Observable<HttpResponse<Booking>>) {
@@ -151,6 +153,7 @@ export class BookingPopupComponent implements OnInit, OnDestroy {
             if ( params['id'] ) {
                 this.bookingPopupService
                     .open(BookingDialogComponent as Component, params['id']);
+                console.log("popup loaded");
             } else {
                 this.bookingPopupService
                     .open(BookingDialogComponent as Component);

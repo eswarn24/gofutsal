@@ -3,6 +3,7 @@ package my.com.gofutsal.service;
 import my.com.gofutsal.domain.CourtLocation;
 import my.com.gofutsal.repository.CourtLocationRepository;
 import my.com.gofutsal.repository.search.CourtLocationSearchRepository;
+import my.com.gofutsal.security.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -54,6 +55,7 @@ public class CourtLocationService {
     public Page<CourtLocation> findAll(Pageable pageable) {
         log.debug("Request to get all CourtLocations");
         return courtLocationRepository.findAll(pageable);
+        //return courtLocationRepository.findByUserLogin(SecurityUtils.getCurrentUserLogin(),pageable);
     }
 
     /**

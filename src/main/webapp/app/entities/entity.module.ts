@@ -6,6 +6,7 @@ import { GofutsalCourtModule } from './court/court.module';
 import { GofutsalBookingModule } from './booking/booking.module';
 
 import { GofutsalBookingStatusModule } from './booking-status/booking-status.module';
+import {GofutsalBookingHistoryModule} from "./booking-history/booking-history.module";
 /* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
 
 @NgModule({
@@ -14,9 +15,10 @@ import { GofutsalBookingStatusModule } from './booking-status/booking-status.mod
         GofutsalCourtLocationModule,
         GofutsalCourtModule,
         GofutsalBookingModule,
+        GofutsalBookingHistoryModule,
         GofutsalBookingStatusModule,
         /* jhipster-needle-add-entity-module - JHipster will add entity modules here */
-	
+
     ],
     declarations: [],
     entryComponents: [],

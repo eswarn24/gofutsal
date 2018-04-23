@@ -4,11 +4,22 @@
         {
             "relationshipName": "court",
             "otherEntityName": "court",
-            "relationshipType": "one-to-one",
+            "relationshipType": "many-to-one",
             "relationshipValidateRules": [
                 "required"
             ],
             "otherEntityField": "name",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "booking"
+        },
+        {
+            "relationshipName": "bookingUser",
+            "otherEntityName": "user",
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": [
+                "required"
+            ],
+            "otherEntityField": "login",
             "ownerSide": true,
             "otherEntityRelationshipName": "booking"
         }
@@ -27,16 +38,15 @@
             "fieldValues": "Requested,Apporved"
         },
         {
-            "fieldName": "time",
-            "fieldType": "Instant",
+            "fieldName": "bookingTime",
+            "fieldType": "String",
             "fieldValidateRules": [
                 "required"
             ]
         },
         {
-            "fieldName": "duration",
-            "fieldType": "BookingDuration",
-            "fieldValues": " one,onehalf,two,twohalf,three,threehalf,four,fourhalf,five",
+            "fieldName": "bookingHour",
+            "fieldType": "String",
             "fieldValidateRules": [
                 "required"
             ]

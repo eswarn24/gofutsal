@@ -3,11 +3,10 @@ import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes } from '@a
 import { JhiPaginationUtil } from 'ng-jhipster';
 
 import { UserRouteAccessService } from '../../shared';
-import { BookingComponent } from './booking.component';
-import { BookingPopupComponent } from './booking-dialog.component';
-import { CourtComponent } from '../court/court.component';
-import { CourtDetailComponent } from '../court/court-detail.component';
-import {BookingDetailComponent} from "./booking-detail.component";
+import { BookingHistoryComponent } from './booking-history.component';
+import { BookingHistoryDetailComponent } from './booking-history-detail.component';
+import { BookingHistoryPopupComponent } from './booking-history-dialog.component';
+import { BookingHistoryDeletePopupComponent } from './booking-history-delete-dialog.component';
 
 @Injectable()
 export class BookingResolvePagingParams implements Resolve<any> {
@@ -21,14 +20,14 @@ export class BookingResolvePagingParams implements Resolve<any> {
             page: this.paginationUtil.parsePage(page),
             predicate: this.paginationUtil.parsePredicate(sort),
             ascending: this.paginationUtil.parseAscending(sort)
-        };
+      };
     }
 }
 
-export const bookingRoute: Routes = [
+export const bookingHistoryRoute: Routes = [
     {
-        path: 'booking',
-        component: BookingComponent,
+        path: 'booking-history',
+        component: BookingHistoryComponent,
         resolve: {
             'pagingParams': BookingResolvePagingParams
         },
@@ -38,8 +37,8 @@ export const bookingRoute: Routes = [
         },
         canActivate: [UserRouteAccessService]
     }, {
-        path: 'booking/:id',
-        component: BookingDetailComponent,
+        path: 'booking-history/:id',
+        component: BookingHistoryDetailComponent,
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'Bookings'
@@ -51,18 +50,6 @@ export const bookingRoute: Routes = [
 export const bookingPopupRoute: Routes = [
     /*{
         path: 'booking-new',
-        component: BookingHistoryComponent,
-        resolve: {
-            'pagingParams': BookingResolvePagingParams
-        },
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'Bookings'
-        },
-        canActivate: [UserRouteAccessService]
-    },*/
-    {
-        path: 'booking/:id/new',
         component: BookingPopupComponent,
         data: {
             authorities: ['ROLE_USER'],
@@ -70,5 +57,35 @@ export const bookingPopupRoute: Routes = [
         },
         canActivate: [UserRouteAccessService],
         outlet: 'popup'
-    }
+    },*/
+    {
+        path: 'booking-history/:id/approve',
+        component: BookingHistoryDeletePopupComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'Bookings'
+        },
+        canActivate: [UserRouteAccessService],
+        outlet: 'popup'
+    },
+    {
+        path: 'booking-history/:id/reject',
+        component: BookingHistoryDeletePopupComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'Bookings'
+        },
+        canActivate: [UserRouteAccessService],
+        outlet: 'popup'
+    }/*,
+    {
+        path: 'booking/:id/approve',
+        component: BookingHistoryDeletePopupComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'Bookings'
+        },
+        canActivate: [UserRouteAccessService],
+        outlet: 'popup'
+    }*/
 ];

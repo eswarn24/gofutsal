@@ -1,0 +1,120 @@
+<dl class="row-md jh-entity-details">
+    <dt><span>Name</span></dt>
+    <dd>
+        <span>{{court.name}}</span>
+    </dd>
+    <dt><span>Rate</span></dt>
+    <dd>
+        <span>{{court.rate}}</span>
+    </dd>
+</dl>
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myBookingLabel">Create a Booking</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!booking.id">
+            <label for="id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="booking.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_date">Date</label>
+            <div class="input-group">
+                <input id="field_date" type="text" class="form-control" name="date" ngbDatepicker  #dateDp="ngbDatepicker" [(ngModel)]="booking.date"
+                       required/>
+                <span class="input-group-append">
+                    <button type="button" class="btn btn-secondary" (click)="dateDp.toggle()"><i class="fa fa-calendar"></i></button>
+                </span>
+            </div>
+            <div [hidden]="!(editForm.controls.date?.dirty && editForm.controls.date?.invalid)">
+                <small class="form-text text-danger"
+                       [hidden]="!editForm.controls.date?.errors?.required">
+                    This field is required.
+                </small>
+            </div>
+        </div>
+       <!-- <div class="form-group">
+            <label class="form-control-label" for="field_startTime">Start Time</label>
+            <div class="d-flex">
+                <input id="field_startTime" type="datetime-local" class="form-control" name="startTime" [(ngModel)]="booking.startTime"
+                       required/>
+            </div>
+            <div [hidden]="!(editForm.controls.startTime?.dirty && editForm.controls.startTime?.invalid)">
+                <small class="form-text text-danger"
+                       [hidden]="!editForm.controls.startTime?.errors?.required">
+                    This field is required.
+                </small>
+                <small class="form-text text-danger"
+                       [hidden]="!editForm.controls.startTime?.errors?.ZonedDateTimelocal">
+                    This field should be a date and time.
+                </small>
+            </div>
+        </div>-->
+       <!-- <div class="form-group">
+            <label class="form-control-label" for="field_endTime">End Time</label>
+            <div class="d-flex">
+                <input id="field_endTime" type="datetime-local" class="form-control" name="endTime" [(ngModel)]="booking.endTime"
+                       required/>
+            </div>
+            <div [hidden]="!(editForm.controls.endTime?.dirty && editForm.controls.endTime?.invalid)">
+                <small class="form-text text-danger"
+                       [hidden]="!editForm.controls.endTime?.errors?.required">
+                    This field is required.
+                </small>
+                <small class="form-text text-danger"
+                       [hidden]="!editForm.controls.endTime?.errors?.ZonedDateTimelocal">
+                    This field should be a date and time.
+                </small>
+            </div>
+        </div>-->
+
+        <div class="form-group">
+            <label class="form-control-label" for="field_bookingstatus">Status</label>
+            <select class="form-control" name="status"  id="field_bookingstatus"  [(ngModel)]="booking.status" required>
+                <option value="10AM">Approved</option>
+                <option value="11AM">Rejected</option>
+
+            </select>
+            <div [hidden]="!(editForm.controls.region?.dirty && editForm.controls.region?.invalid)">
+                <small class="form-text text-danger"
+                       [hidden]="!editForm.controls.region?.errors?.required">
+                    This field is required.
+                </small>
+            </div>
+        </div>
+        <!-- <div class="form-group">
+             <label class="form-control-label" for="field_status">Status</label>
+             <select class="form-control" name="status" [(ngModel)]="booking.status" id="field_status" >
+                 <option value="Requested">Requested</option>
+                 <option value="Apporved">Apporved</option>
+             </select>
+         </div>-->
+
+        <!--   <div class="form-group">
+             <label class="form-control-label" for="field_court">Court</label>
+             <select class="form-control" id="field_court" name="court" [(ngModel)]="booking.court" required>
+                 <option *ngIf="!editForm.value.court" [ngValue]="null" selected></option>
+                 <option [ngValue]="courtOption.id === booking.court?.id ? booking.court : courtOption" *ngFor="let courtOption of courts; trackBy: trackCourtById">{{courtOption.name}}</option>
+             </select>
+         </div>
+         <div [hidden]="!(editForm.controls.court?.dirty && editForm.controls.court?.invalid)">
+             <small class="form-text text-danger"
+                 [hidden]="!editForm.controls.court?.errors?.required">
+                 This field is required.
+             </small>
+         </div>-->
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span>Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span>Save</span>
+        </button>
+    </div>
+</form>

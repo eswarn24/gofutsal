@@ -1,4 +1,5 @@
-import { BaseEntity, User } from './../../shared';
+import { BaseEntity } from './../../shared';
+import {User} from "../../shared";
 
 export const enum UserBookingStatus {
     'Requested',

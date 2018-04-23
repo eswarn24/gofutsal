@@ -4,6 +4,7 @@ import my.com.gofutsal.GofutsalApp;
 
 import my.com.gofutsal.domain.Booking;
 import my.com.gofutsal.domain.Court;
+import my.com.gofutsal.domain.User;
 import my.com.gofutsal.repository.BookingRepository;
 import my.com.gofutsal.service.BookingService;
 import my.com.gofutsal.repository.search.BookingSearchRepository;
@@ -27,9 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
-import java.time.Instant;
 import java.time.ZoneId;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static my.com.gofutsal.web.rest.TestUtil.createFormattingConversionService;
@@ -39,7 +38,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import my.com.gofutsal.domain.enumeration.UserBookingStatus;
-import my.com.gofutsal.domain.enumeration.BookingDuration;
 /**
  * Test class for the BookingResource REST controller.
  *
@@ -55,11 +53,11 @@ public class BookingResourceIntTest {
     private static final UserBookingStatus DEFAULT_STATUS = UserBookingStatus.Requested;
     private static final UserBookingStatus UPDATED_STATUS = UserBookingStatus.Apporved;
 
-    private static final Instant DEFAULT_TIME = Instant.ofEpochMilli(0L);
-    private static final Instant UPDATED_TIME = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+    private static final String DEFAULT_BOOKING_TIME = "AAAAAAAAAA";
+    private static final String UPDATED_BOOKING_TIME = "BBBBBBBBBB";
 
-    private static final BookingDuration DEFAULT_DURATION = BookingDuration.one;
-    private static final BookingDuration UPDATED_DURATION = BookingDuration.onehalf;
+    private static final String DEFAULT_BOOKING_HOUR = "AAAAAAAAAA";
+    private static final String UPDATED_BOOKING_HOUR = "BBBBBBBBBB";
 
     @Autowired
     private BookingRepository bookingRepository;
@@ -110,13 +108,18 @@ public class BookingResourceIntTest {
         Booking booking = new Booking()
             .date(DEFAULT_DATE)
             .status(DEFAULT_STATUS)
-            .time(DEFAULT_TIME)
-            .duration(DEFAULT_DURATION);
+            .bookingTime(DEFAULT_BOOKING_TIME)
+            .bookingHour(DEFAULT_BOOKING_HOUR);
         // Add required entity
         Court court = CourtResourceIntTest.createEntity(em);
         em.persist(court);
         em.flush();
         booking.setCourt(court);
+        // Add required entity
+        User bookingUser = UserResourceIntTest.createEntity(em);
+        em.persist(bookingUser);
+        em.flush();
+        booking.setBookingUser(bookingUser);
         return booking;
     }
 
@@ -143,8 +146,8 @@ public class BookingResourceIntTest {
         Booking testBooking = bookingList.get(bookingList.size() - 1);
         assertThat(testBooking.getDate()).isEqualTo(DEFAULT_DATE);
         assertThat(testBooking.getStatus()).isEqualTo(DEFAULT_STATUS);
-        assertThat(testBooking.getTime()).isEqualTo(DEFAULT_TIME);
-        assertThat(testBooking.getDuration()).isEqualTo(DEFAULT_DURATION);
+        assertThat(testBooking.getBookingTime()).isEqualTo(DEFAULT_BOOKING_TIME);
+        assertThat(testBooking.getBookingHour()).isEqualTo(DEFAULT_BOOKING_HOUR);
 
         // Validate the Booking in Elasticsearch
         Booking bookingEs = bookingSearchRepository.findOne(testBooking.getId());
@@ -190,10 +193,10 @@ public class BookingResourceIntTest {
 
     @Test
     @Transactional
-    public void checkTimeIsRequired() throws Exception {
+    public void checkBookingTimeIsRequired() throws Exception {
         int databaseSizeBeforeTest = bookingRepository.findAll().size();
         // set the field null
-        booking.setTime(null);
+        booking.setBookingTime(null);
 
         // Create the Booking, which fails.
 
@@ -208,10 +211,10 @@ public class BookingResourceIntTest {
 
     @Test
     @Transactional
-    public void checkDurationIsRequired() throws Exception {
+    public void checkBookingHourIsRequired() throws Exception {
         int databaseSizeBeforeTest = bookingRepository.findAll().size();
         // set the field null
-        booking.setDuration(null);
+        booking.setBookingHour(null);
 
         // Create the Booking, which fails.
 
@@ -237,8 +240,8 @@ public class BookingResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(booking.getId().intValue())))
             .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())))
-            .andExpect(jsonPath("$.[*].time").value(hasItem(DEFAULT_TIME.toString())))
-            .andExpect(jsonPath("$.[*].duration").value(hasItem(DEFAULT_DURATION.toString())));
+            .andExpect(jsonPath("$.[*].bookingTime").value(hasItem(DEFAULT_BOOKING_TIME.toString())))
+            .andExpect(jsonPath("$.[*].bookingHour").value(hasItem(DEFAULT_BOOKING_HOUR.toString())));
     }
 
     @Test
@@ -254,8 +257,8 @@ public class BookingResourceIntTest {
             .andExpect(jsonPath("$.id").value(booking.getId().intValue()))
             .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()))
             .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.toString()))
-            .andExpect(jsonPath("$.time").value(DEFAULT_TIME.toString()))
-            .andExpect(jsonPath("$.duration").value(DEFAULT_DURATION.toString()));
+            .andExpect(jsonPath("$.bookingTime").value(DEFAULT_BOOKING_TIME.toString()))
+            .andExpect(jsonPath("$.bookingHour").value(DEFAULT_BOOKING_HOUR.toString()));
     }
 
     @Test
@@ -365,80 +368,80 @@ public class BookingResourceIntTest {
 
     @Test
     @Transactional
-    public void getAllBookingsByTimeIsEqualToSomething() throws Exception {
+    public void getAllBookingsByBookingTimeIsEqualToSomething() throws Exception {
         // Initialize the database
         bookingRepository.saveAndFlush(booking);
 
-        // Get all the bookingList where time equals to DEFAULT_TIME
-        defaultBookingShouldBeFound("time.equals=" + DEFAULT_TIME);
+        // Get all the bookingList where bookingTime equals to DEFAULT_BOOKING_TIME
+        defaultBookingShouldBeFound("bookingTime.equals=" + DEFAULT_BOOKING_TIME);
 
-        // Get all the bookingList where time equals to UPDATED_TIME
-        defaultBookingShouldNotBeFound("time.equals=" + UPDATED_TIME);
+        // Get all the bookingList where bookingTime equals to UPDATED_BOOKING_TIME
+        defaultBookingShouldNotBeFound("bookingTime.equals=" + UPDATED_BOOKING_TIME);
     }
 
     @Test
     @Transactional
-    public void getAllBookingsByTimeIsInShouldWork() throws Exception {
+    public void getAllBookingsByBookingTimeIsInShouldWork() throws Exception {
         // Initialize the database
         bookingRepository.saveAndFlush(booking);
 
-        // Get all the bookingList where time in DEFAULT_TIME or UPDATED_TIME
-        defaultBookingShouldBeFound("time.in=" + DEFAULT_TIME + "," + UPDATED_TIME);
+        // Get all the bookingList where bookingTime in DEFAULT_BOOKING_TIME or UPDATED_BOOKING_TIME
+        defaultBookingShouldBeFound("bookingTime.in=" + DEFAULT_BOOKING_TIME + "," + UPDATED_BOOKING_TIME);
 
-        // Get all the bookingList where time equals to UPDATED_TIME
-        defaultBookingShouldNotBeFound("time.in=" + UPDATED_TIME);
+        // Get all the bookingList where bookingTime equals to UPDATED_BOOKING_TIME
+        defaultBookingShouldNotBeFound("bookingTime.in=" + UPDATED_BOOKING_TIME);
     }
 
     @Test
     @Transactional
-    public void getAllBookingsByTimeIsNullOrNotNull() throws Exception {
+    public void getAllBookingsByBookingTimeIsNullOrNotNull() throws Exception {
         // Initialize the database
         bookingRepository.saveAndFlush(booking);
 
-        // Get all the bookingList where time is not null
-        defaultBookingShouldBeFound("time.specified=true");
+        // Get all the bookingList where bookingTime is not null
+        defaultBookingShouldBeFound("bookingTime.specified=true");
 
-        // Get all the bookingList where time is null
-        defaultBookingShouldNotBeFound("time.specified=false");
+        // Get all the bookingList where bookingTime is null
+        defaultBookingShouldNotBeFound("bookingTime.specified=false");
     }
 
     @Test
     @Transactional
-    public void getAllBookingsByDurationIsEqualToSomething() throws Exception {
+    public void getAllBookingsByBookingHourIsEqualToSomething() throws Exception {
         // Initialize the database
         bookingRepository.saveAndFlush(booking);
 
-        // Get all the bookingList where duration equals to DEFAULT_DURATION
-        defaultBookingShouldBeFound("duration.equals=" + DEFAULT_DURATION);
+        // Get all the bookingList where bookingHour equals to DEFAULT_BOOKING_HOUR
+        defaultBookingShouldBeFound("bookingHour.equals=" + DEFAULT_BOOKING_HOUR);
 
-        // Get all the bookingList where duration equals to UPDATED_DURATION
-        defaultBookingShouldNotBeFound("duration.equals=" + UPDATED_DURATION);
+        // Get all the bookingList where bookingHour equals to UPDATED_BOOKING_HOUR
+        defaultBookingShouldNotBeFound("bookingHour.equals=" + UPDATED_BOOKING_HOUR);
     }
 
     @Test
     @Transactional
-    public void getAllBookingsByDurationIsInShouldWork() throws Exception {
+    public void getAllBookingsByBookingHourIsInShouldWork() throws Exception {
         // Initialize the database
         bookingRepository.saveAndFlush(booking);
 
-        // Get all the bookingList where duration in DEFAULT_DURATION or UPDATED_DURATION
-        defaultBookingShouldBeFound("duration.in=" + DEFAULT_DURATION + "," + UPDATED_DURATION);
+        // Get all the bookingList where bookingHour in DEFAULT_BOOKING_HOUR or UPDATED_BOOKING_HOUR
+        defaultBookingShouldBeFound("bookingHour.in=" + DEFAULT_BOOKING_HOUR + "," + UPDATED_BOOKING_HOUR);
 
-        // Get all the bookingList where duration equals to UPDATED_DURATION
-        defaultBookingShouldNotBeFound("duration.in=" + UPDATED_DURATION);
+        // Get all the bookingList where bookingHour equals to UPDATED_BOOKING_HOUR
+        defaultBookingShouldNotBeFound("bookingHour.in=" + UPDATED_BOOKING_HOUR);
     }
 
     @Test
     @Transactional
-    public void getAllBookingsByDurationIsNullOrNotNull() throws Exception {
+    public void getAllBookingsByBookingHourIsNullOrNotNull() throws Exception {
         // Initialize the database
         bookingRepository.saveAndFlush(booking);
 
-        // Get all the bookingList where duration is not null
-        defaultBookingShouldBeFound("duration.specified=true");
+        // Get all the bookingList where bookingHour is not null
+        defaultBookingShouldBeFound("bookingHour.specified=true");
 
-        // Get all the bookingList where duration is null
-        defaultBookingShouldNotBeFound("duration.specified=false");
+        // Get all the bookingList where bookingHour is null
+        defaultBookingShouldNotBeFound("bookingHour.specified=false");
     }
 
     @Test
@@ -459,6 +462,25 @@ public class BookingResourceIntTest {
         defaultBookingShouldNotBeFound("courtId.equals=" + (courtId + 1));
     }
 
+
+    @Test
+    @Transactional
+    public void getAllBookingsByBookingUserIsEqualToSomething() throws Exception {
+        // Initialize the database
+        User bookingUser = UserResourceIntTest.createEntity(em);
+        em.persist(bookingUser);
+        em.flush();
+        booking.setBookingUser(bookingUser);
+        bookingRepository.saveAndFlush(booking);
+        Long bookingUserId = bookingUser.getId();
+
+        // Get all the bookingList where bookingUser equals to bookingUserId
+        defaultBookingShouldBeFound("bookingUserId.equals=" + bookingUserId);
+
+        // Get all the bookingList where bookingUser equals to bookingUserId + 1
+        defaultBookingShouldNotBeFound("bookingUserId.equals=" + (bookingUserId + 1));
+    }
+
     /**
      * Executes the search, and checks that the default entity is returned
      */
@@ -469,8 +491,8 @@ public class BookingResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(booking.getId().intValue())))
             .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())))
-            .andExpect(jsonPath("$.[*].time").value(hasItem(DEFAULT_TIME.toString())))
-            .andExpect(jsonPath("$.[*].duration").value(hasItem(DEFAULT_DURATION.toString())));
+            .andExpect(jsonPath("$.[*].bookingTime").value(hasItem(DEFAULT_BOOKING_TIME.toString())))
+            .andExpect(jsonPath("$.[*].bookingHour").value(hasItem(DEFAULT_BOOKING_HOUR.toString())));
     }
 
     /**
@@ -508,8 +530,8 @@ public class BookingResourceIntTest {
         updatedBooking
             .date(UPDATED_DATE)
             .status(UPDATED_STATUS)
-            .time(UPDATED_TIME)
-            .duration(UPDATED_DURATION);
+            .bookingTime(UPDATED_BOOKING_TIME)
+            .bookingHour(UPDATED_BOOKING_HOUR);
 
         restBookingMockMvc.perform(put("/api/bookings")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -522,8 +544,8 @@ public class BookingResourceIntTest {
         Booking testBooking = bookingList.get(bookingList.size() - 1);
         assertThat(testBooking.getDate()).isEqualTo(UPDATED_DATE);
         assertThat(testBooking.getStatus()).isEqualTo(UPDATED_STATUS);
-        assertThat(testBooking.getTime()).isEqualTo(UPDATED_TIME);
-        assertThat(testBooking.getDuration()).isEqualTo(UPDATED_DURATION);
+        assertThat(testBooking.getBookingTime()).isEqualTo(UPDATED_BOOKING_TIME);
+        assertThat(testBooking.getBookingHour()).isEqualTo(UPDATED_BOOKING_HOUR);
 
         // Validate the Booking in Elasticsearch
         Booking bookingEs = bookingSearchRepository.findOne(testBooking.getId());
@@ -583,8 +605,8 @@ public class BookingResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(booking.getId().intValue())))
             .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())))
-            .andExpect(jsonPath("$.[*].time").value(hasItem(DEFAULT_TIME.toString())))
-            .andExpect(jsonPath("$.[*].duration").value(hasItem(DEFAULT_DURATION.toString())));
+            .andExpect(jsonPath("$.[*].bookingTime").value(hasItem(DEFAULT_BOOKING_TIME.toString())))
+            .andExpect(jsonPath("$.[*].bookingHour").value(hasItem(DEFAULT_BOOKING_HOUR.toString())));
     }
 
     @Test

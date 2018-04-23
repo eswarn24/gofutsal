@@ -2,18 +2,19 @@ import { Injectable, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { HttpResponse } from '@angular/common/http';
-import { Court } from '../court//court.model';
-import { Booking } from '../booking//booking.model';
-import { CourtService } from '../court/court.service';
+import { DatePipe } from '@angular/common';
+import { Booking } from './booking-history.model';
+import { BookingHistoryService } from './booking-history.service';
 
 @Injectable()
-export class BookingPopupService {
+export class BookingHistoryPopupService {
     private ngbModalRef: NgbModalRef;
 
     constructor(
+        private datePipe: DatePipe,
         private modalService: NgbModal,
         private router: Router,
-        private courtService: CourtService
+        private bookingService: BookingHistoryService
 
     ) {
         this.ngbModalRef = null;
@@ -27,28 +28,36 @@ export class BookingPopupService {
             }
 
             if (id) {
-                console.log("ID from popup service"+id);
-                this.courtService.find(id)
-                    .subscribe((courtResponse: HttpResponse<Court>) => {
-                        const court: Court = courtResponse.body;
-
-                        this.ngbModalRef = this.courtModalRef(component, court, new Booking());
+                this.bookingService.find(id)
+                    .subscribe((bookingResponse: HttpResponse<Booking>) => {
+                        const booking: Booking = bookingResponse.body;
+                        if (booking.date) {
+                            booking.date = {
+                                year: booking.date.getFullYear(),
+                                month: booking.date.getMonth() + 1,
+                                day: booking.date.getDate()
+                            };
+                        }
+                       /* booking.startTime = this.datePipe
+                            .transform(booking.startTime, 'yyyy-MM-ddTHH:mm:ss');
+                        booking.endTime = this.datePipe
+                            .transform(booking.endTime, 'yyyy-MM-ddTHH:mm:ss');*/
+                        this.ngbModalRef = this.bookingModalRef(component, booking);
                         resolve(this.ngbModalRef);
                     });
             } else {
                 // setTimeout used as a workaround for getting ExpressionChangedAfterItHasBeenCheckedError
                 setTimeout(() => {
-                    this.ngbModalRef = this.courtModalRef(component, new Court(), new Booking());
+                    this.ngbModalRef = this.bookingModalRef(component, new Booking());
                     resolve(this.ngbModalRef);
                 }, 0);
             }
         });
     }
 
-    courtModalRef(component: Component, court: Court, booking: Booking): NgbModalRef {
+    bookingModalRef(component: Component, booking: Booking): NgbModalRef {
         const modalRef = this.modalService.open(component, { size: 'lg', backdrop: 'static'});
-        modalRef.componentInstance.court = court;
-        modalRef.componentInstance.booking=booking;
+        modalRef.componentInstance.booking = booking;
         modalRef.result.then((result) => {
             this.router.navigate([{ outlets: { popup: null }}], { replaceUrl: true, queryParamsHandling: 'merge' });
             this.ngbModalRef = null;

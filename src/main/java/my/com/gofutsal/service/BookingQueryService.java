@@ -20,7 +20,6 @@ import my.com.gofutsal.repository.search.BookingSearchRepository;
 import my.com.gofutsal.service.dto.BookingCriteria;
 
 import my.com.gofutsal.domain.enumeration.UserBookingStatus;
-import my.com.gofutsal.domain.enumeration.BookingDuration;
 
 /**
  * Service for executing complex queries for Booking entities in the database.
@@ -84,14 +83,17 @@ public class BookingQueryService extends QueryService<Booking> {
             if (criteria.getStatus() != null) {
                 specification = specification.and(buildSpecification(criteria.getStatus(), Booking_.status));
             }
-            if (criteria.getTime() != null) {
-                specification = specification.and(buildRangeSpecification(criteria.getTime(), Booking_.time));
+            if (criteria.getBookingTime() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getBookingTime(), Booking_.bookingTime));
             }
-            if (criteria.getDuration() != null) {
-                specification = specification.and(buildSpecification(criteria.getDuration(), Booking_.duration));
+            if (criteria.getBookingHour() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getBookingHour(), Booking_.bookingHour));
             }
             if (criteria.getCourtId() != null) {
                 specification = specification.and(buildReferringEntitySpecification(criteria.getCourtId(), Booking_.court, Court_.id));
+            }
+            if (criteria.getBookingUserId() != null) {
+                specification = specification.and(buildReferringEntitySpecification(criteria.getBookingUserId(), Booking_.bookingUser, User_.id));
             }
         }
         return specification;

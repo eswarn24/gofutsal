@@ -8,13 +8,10 @@ import javax.validation.constraints.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Objects;
 
 import my.com.gofutsal.domain.enumeration.UserBookingStatus;
-
-import my.com.gofutsal.domain.enumeration.BookingDuration;
 
 /**
  * A Booking.
@@ -40,18 +37,21 @@ public class Booking implements Serializable {
     private UserBookingStatus status;
 
     @NotNull
-    @Column(name = "jhi_time", nullable = false)
-    private Instant time;
+    @Column(name = "booking_time", nullable = false)
+    private String bookingTime;
 
     @NotNull
-    @Enumerated(EnumType.STRING)
-    @Column(name = "duration", nullable = false)
-    private BookingDuration duration;
+    @Column(name = "booking_hour", nullable = false)
+    private String bookingHour;
 
     @OneToOne(optional = false)
-    @NotNull
+
     @JoinColumn(unique = true)
     private Court court;
+
+    @ManyToOne(optional = false)
+
+    private User bookingUser;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -88,30 +88,30 @@ public class Booking implements Serializable {
         this.status = status;
     }
 
-    public Instant getTime() {
-        return time;
+    public String getBookingTime() {
+        return bookingTime;
     }
 
-    public Booking time(Instant time) {
-        this.time = time;
+    public Booking bookingTime(String bookingTime) {
+        this.bookingTime = bookingTime;
         return this;
     }
 
-    public void setTime(Instant time) {
-        this.time = time;
+    public void setBookingTime(String bookingTime) {
+        this.bookingTime = bookingTime;
     }
 
-    public BookingDuration getDuration() {
-        return duration;
+    public String getBookingHour() {
+        return bookingHour;
     }
 
-    public Booking duration(BookingDuration duration) {
-        this.duration = duration;
+    public Booking bookingHour(String bookingHour) {
+        this.bookingHour = bookingHour;
         return this;
     }
 
-    public void setDuration(BookingDuration duration) {
-        this.duration = duration;
+    public void setBookingHour(String bookingHour) {
+        this.bookingHour = bookingHour;
     }
 
     public Court getCourt() {
@@ -125,6 +125,19 @@ public class Booking implements Serializable {
 
     public void setCourt(Court court) {
         this.court = court;
+    }
+
+    public User getBookingUser() {
+        return bookingUser;
+    }
+
+    public Booking bookingUser(User user) {
+        this.bookingUser = user;
+        return this;
+    }
+
+    public void setBookingUser(User user) {
+        this.bookingUser = user;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
@@ -154,8 +167,8 @@ public class Booking implements Serializable {
             "id=" + getId() +
             ", date='" + getDate() + "'" +
             ", status='" + getStatus() + "'" +
-            ", time='" + getTime() + "'" +
-            ", duration='" + getDuration() + "'" +
+            ", bookingTime='" + getBookingTime() + "'" +
+            ", bookingHour='" + getBookingHour() + "'" +
             "}";
     }
 }

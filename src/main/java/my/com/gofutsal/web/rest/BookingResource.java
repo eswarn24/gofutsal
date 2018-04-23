@@ -2,7 +2,11 @@ package my.com.gofutsal.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import my.com.gofutsal.domain.Booking;
+import my.com.gofutsal.domain.enumeration.UserBookingStatus;
+import my.com.gofutsal.security.SecurityUtils;
 import my.com.gofutsal.service.BookingService;
+import my.com.gofutsal.service.MailService;
+import my.com.gofutsal.service.UserService;
 import my.com.gofutsal.web.rest.errors.BadRequestAlertException;
 import my.com.gofutsal.web.rest.util.HeaderUtil;
 import my.com.gofutsal.web.rest.util.PaginationUtil;
@@ -41,11 +45,17 @@ public class BookingResource {
 
     private final BookingService bookingService;
 
+    private final UserService userService;
+
+    private final MailService mailService;
+
     private final BookingQueryService bookingQueryService;
 
-    public BookingResource(BookingService bookingService, BookingQueryService bookingQueryService) {
+    public BookingResource(BookingService bookingService, BookingQueryService bookingQueryService, UserService userService, MailService mailService) {
         this.bookingService = bookingService;
         this.bookingQueryService = bookingQueryService;
+        this.userService= userService;
+        this.mailService=mailService;
     }
 
     /**
@@ -59,10 +69,14 @@ public class BookingResource {
     @Timed
     public ResponseEntity<Booking> createBooking(@Valid @RequestBody Booking booking) throws URISyntaxException {
         log.debug("REST request to save Booking : {}", booking);
+        booking.setStatus(UserBookingStatus.Requested);
+
+        booking.setBookingUser(userService.getUserWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin().get()).get());
         if (booking.getId() != null) {
             throw new BadRequestAlertException("A new booking cannot already have an ID", ENTITY_NAME, "idexists");
         }
         Booking result = bookingService.save(booking);
+        mailService.sendEmailFromTemplate(booking.getBookingUser(),"bookingConfirmationEmail","email.booking.confirmation.title");
         return ResponseEntity.created(new URI("/api/bookings/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -88,6 +102,31 @@ public class BookingResource {
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, booking.getId().toString()))
             .body(result);
+    }
+
+
+    /**
+     * PUT  /bookings : Approves an existing booking.
+     *
+     * @param id the booking to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated booking,
+     * or with status 400 (Bad Request) if the booking is not valid,
+     * or with status 500 (Internal Server Error) if the booking couldn't be updated
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PutMapping("/approve/bookings/{id}")
+    @Timed
+    public ResponseEntity<Booking> approveBooking(@PathVariable Long id) {
+        log.debug("REST request to approve Booking : {}", id);
+        Booking booking = bookingService.findOne(id);
+        booking.setStatus(UserBookingStatus.Apporved);
+
+        Booking result = bookingService.save(booking);
+
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityApprovalAlert(ENTITY_NAME, result.getId().toString())).build();
+      /*  return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, booking.getId().toString()))
+            .body(result);*/
     }
 
     /**

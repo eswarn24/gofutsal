@@ -5,15 +5,16 @@ import { SERVER_API_URL } from '../../app.constants';
 
 import { JhiDateUtils } from 'ng-jhipster';
 
-import { Booking } from './booking.model';
+import { Booking } from './booking-history.model';
 import { createRequestOption } from '../../shared';
 
 export type EntityResponseType = HttpResponse<Booking>;
 
 @Injectable()
-export class BookingService {
+export class BookingHistoryService {
 
     private resourceUrl =  SERVER_API_URL + 'api/bookings';
+    private resourceApproveUrl =  SERVER_API_URL + 'api/approve/bookings';
     private resourceSearchUrl = SERVER_API_URL + 'api/_search/bookings';
 
     constructor(private http: HttpClient, private dateUtils: JhiDateUtils) { }
@@ -30,6 +31,8 @@ export class BookingService {
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
 
+
+
     find(id: number): Observable<EntityResponseType> {
         return this.http.get<Booking>(`${this.resourceUrl}/${id}`, { observe: 'response'})
             .map((res: EntityResponseType) => this.convertResponse(res));
@@ -45,9 +48,14 @@ export class BookingService {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
     }
 
+    approve(id: number): Observable<HttpResponse<any>> {
+        return this.http.put<any>(`${this.resourceApproveUrl}/${id}`, { observe: 'response'});
+    }
+
+
+
     search(req?: any): Observable<HttpResponse<Booking[]>> {
         const options = createRequestOption(req);
-        console.log("inside search method");
         return this.http.get<Booking[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
             .map((res: HttpResponse<Booking[]>) => this.convertArrayResponse(res));
     }
@@ -88,7 +96,7 @@ export class BookingService {
         copy.date = this.dateUtils
             .convertLocalDateToServer(booking.date);
 
-        /*copy.startTime = this.dateUtils.toDate(booking.startTime);
+       /* copy.startTime = this.dateUtils.toDate(booking.startTime);
 
         copy.endTime = this.dateUtils.toDate(booking.endTime);*/
         return copy;

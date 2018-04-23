@@ -29,20 +29,20 @@
                     </span>
                 </a>
                 <ul class="dropdown-menu" ngbDropdownMenu>
-                   
+
                     <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
                         <a class="dropdown-item" routerLink="court-type" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span>Court Type</span>
                         </a>
                     </li>
-                    <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
+                    <li *jhiHasAnyAuthority="'ROLE_MANAGER'">
                         <a class="dropdown-item" routerLink="court-location" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span>Court Location</span>
                         </a>
                     </li>
-                    <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
+                    <li *jhiHasAnyAuthority="'ROLE_MANAGER'">
                         <a class="dropdown-item" routerLink="court" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span>Court</span>
@@ -60,7 +60,14 @@
                             <span>Booking Status</span>
                         </a>
                     </li>
-                    
+
+                    <li *jhiHasAnyAuthority="'ROLE_USER','ROLE_MANAGER'">
+                        <a class="dropdown-item" routerLink="booking-history" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                            <span>Booking History</span>
+                        </a>
+                    </li>
+
                      <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
                 </ul>
             </li>

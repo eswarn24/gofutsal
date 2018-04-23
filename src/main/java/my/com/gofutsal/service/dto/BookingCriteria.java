@@ -2,7 +2,6 @@ package my.com.gofutsal.service.dto;
 
 import java.io.Serializable;
 import my.com.gofutsal.domain.enumeration.UserBookingStatus;
-import my.com.gofutsal.domain.enumeration.BookingDuration;
 import io.github.jhipster.service.filter.BooleanFilter;
 import io.github.jhipster.service.filter.DoubleFilter;
 import io.github.jhipster.service.filter.Filter;
@@ -11,7 +10,7 @@ import io.github.jhipster.service.filter.IntegerFilter;
 import io.github.jhipster.service.filter.LongFilter;
 import io.github.jhipster.service.filter.StringFilter;
 
-import io.github.jhipster.service.filter.InstantFilter;
+
 import io.github.jhipster.service.filter.LocalDateFilter;
 
 
@@ -31,12 +30,6 @@ public class BookingCriteria implements Serializable {
     public static class UserBookingStatusFilter extends Filter<UserBookingStatus> {
     }
 
-    /**
-     * Class for filtering BookingDuration
-     */
-    public static class BookingDurationFilter extends Filter<BookingDuration> {
-    }
-
     private static final long serialVersionUID = 1L;
 
 
@@ -46,11 +39,13 @@ public class BookingCriteria implements Serializable {
 
     private UserBookingStatusFilter status;
 
-    private InstantFilter time;
+    private StringFilter bookingTime;
 
-    private BookingDurationFilter duration;
+    private StringFilter bookingHour;
 
     private LongFilter courtId;
+
+    private LongFilter bookingUserId;
 
     public BookingCriteria() {
     }
@@ -79,20 +74,20 @@ public class BookingCriteria implements Serializable {
         this.status = status;
     }
 
-    public InstantFilter getTime() {
-        return time;
+    public StringFilter getBookingTime() {
+        return bookingTime;
     }
 
-    public void setTime(InstantFilter time) {
-        this.time = time;
+    public void setBookingTime(StringFilter bookingTime) {
+        this.bookingTime = bookingTime;
     }
 
-    public BookingDurationFilter getDuration() {
-        return duration;
+    public StringFilter getBookingHour() {
+        return bookingHour;
     }
 
-    public void setDuration(BookingDurationFilter duration) {
-        this.duration = duration;
+    public void setBookingHour(StringFilter bookingHour) {
+        this.bookingHour = bookingHour;
     }
 
     public LongFilter getCourtId() {
@@ -103,15 +98,24 @@ public class BookingCriteria implements Serializable {
         this.courtId = courtId;
     }
 
+    public LongFilter getBookingUserId() {
+        return bookingUserId;
+    }
+
+    public void setBookingUserId(LongFilter bookingUserId) {
+        this.bookingUserId = bookingUserId;
+    }
+
     @Override
     public String toString() {
         return "BookingCriteria{" +
                 (id != null ? "id=" + id + ", " : "") +
                 (date != null ? "date=" + date + ", " : "") +
                 (status != null ? "status=" + status + ", " : "") +
-                (time != null ? "time=" + time + ", " : "") +
-                (duration != null ? "duration=" + duration + ", " : "") +
+                (bookingTime != null ? "bookingTime=" + bookingTime + ", " : "") +
+                (bookingHour != null ? "bookingHour=" + bookingHour + ", " : "") +
                 (courtId != null ? "courtId=" + courtId + ", " : "") +
+                (bookingUserId != null ? "bookingUserId=" + bookingUserId + ", " : "") +
             "}";
     }
 
