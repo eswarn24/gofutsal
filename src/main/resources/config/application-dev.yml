@@ -68,10 +68,10 @@ spring:
                     logs: target/elasticsearch/log
                     data: target/elasticsearch/data
     mail:
-        host: smtp.mailtrap.io
-        port: 25
-        username: 8f54a857492ba4
-        password: 5a3542443aee41
+        host: mail.krypto.my
+        port: 587
+        username: alert@krypto.my
+        password: alert@edy
         protocol: smtp
        
     messages:
