@@ -15,7 +15,7 @@
         <div class="form-group">
             <label class="form-control-label" for="field_name">Name</label>
             <input type="text" class="form-control" name="name" id="field_name"
-                   [(ngModel)]="court.name" required/>
+                   [(ngModel)]="court.name" readonly/>
             <div [hidden]="!(editForm.controls.name?.dirty && editForm.controls.name?.invalid)">
                 <small class="form-text text-danger"
                        [hidden]="!editForm.controls.name?.errors?.required">
@@ -26,7 +26,7 @@
         <div class="form-group">
             <label class="form-control-label" for="field_rate">Rate</label>
             <input type="text" class="form-control" name="rate" id="field_rate"
-                   [(ngModel)]="court.rate" required/>
+                   [(ngModel)]="court.rate" readonly/>
             <div [hidden]="!(editForm.controls.rate?.dirty && editForm.controls.rate?.invalid)">
                 <small class="form-text text-danger"
                        [hidden]="!editForm.controls.rate?.errors?.required">
