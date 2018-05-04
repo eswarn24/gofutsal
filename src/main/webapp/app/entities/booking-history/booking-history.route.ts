@@ -32,7 +32,7 @@ export const bookingHistoryRoute: Routes = [
             'pagingParams': BookingResolvePagingParams
         },
         data: {
-            authorities: ['ROLE_USER', 'ROLE_ADMIN'],
+            authorities: ['ROLE_USER', 'ROLE_ADMIN', 'ROLE_MANAGER'],
             pageTitle: 'Bookings'
         },
         canActivate: [UserRouteAccessService]
@@ -40,7 +40,7 @@ export const bookingHistoryRoute: Routes = [
         path: 'booking-history/:id',
         component: BookingHistoryDetailComponent,
         data: {
-            authorities: ['ROLE_USER', 'ROLE_ADMIN'],
+            authorities: ['ROLE_USER', 'ROLE_ADMIN', 'ROLE_MANAGER'],
             pageTitle: 'Bookings'
         },
         canActivate: [UserRouteAccessService]
@@ -62,7 +62,7 @@ export const bookingPopupRoute: Routes = [
         path: 'booking-history/:id/approve',
         component: BookingHistoryDeletePopupComponent,
         data: {
-            authorities: ['ROLE_USER',  'ROLE_ADMIN'],
+            authorities: ['ROLE_USER', 'ROLE_ADMIN', 'ROLE_MANAGER'],
             pageTitle: 'Bookings'
         },
         canActivate: [UserRouteAccessService],
@@ -72,7 +72,7 @@ export const bookingPopupRoute: Routes = [
         path: 'booking-history/:id/reject',
         component: BookingHistoryDeletePopupComponent,
         data: {
-            authorities: ['ROLE_USER',  'ROLE_ADMIN'],
+            authorities: ['ROLE_USER', 'ROLE_ADMIN', 'ROLE_MANAGER'],
             pageTitle: 'Bookings'
         },
         canActivate: [UserRouteAccessService],
@@ -82,7 +82,7 @@ export const bookingPopupRoute: Routes = [
         path: 'booking/:id/approve',
         component: BookingHistoryDeletePopupComponent,
         data: {
-            authorities: ['ROLE_USER',  'ROLE_ADMIN'],
+            authorities: ['ROLE_USER', 'ROLE_ADMIN', 'ROLE_MANAGER'],
             pageTitle: 'Bookings'
         },
         canActivate: [UserRouteAccessService],

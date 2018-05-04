@@ -32,7 +32,7 @@ export const courtLocationRoute: Routes = [
             'pagingParams': CourtLocationResolvePagingParams
         },
         data: {
-            authorities: ['ROLE_USER', 'ROLE_ADMIN'],
+            authorities: ['ROLE_USER', 'ROLE_ADMIN', 'ROLE_MANAGER'],
             pageTitle: 'CourtLocations'
         },
         canActivate: [UserRouteAccessService]
@@ -40,7 +40,7 @@ export const courtLocationRoute: Routes = [
         path: 'court-location/:id',
         component: CourtLocationDetailComponent,
         data: {
-            authorities: ['ROLE_USER', 'ROLE_ADMIN'],
+            authorities: ['ROLE_USER', 'ROLE_ADMIN', 'ROLE_MANAGER'],
             pageTitle: 'CourtLocations'
         },
         canActivate: [UserRouteAccessService]
@@ -52,7 +52,7 @@ export const courtLocationPopupRoute: Routes = [
         path: 'court-location-new',
         component: CourtLocationPopupComponent,
         data: {
-            authorities: ['ROLE_USER', 'ROLE_ADMIN'],
+            authorities: ['ROLE_USER', 'ROLE_ADMIN', 'ROLE_MANAGER'],
             pageTitle: 'CourtLocations'
         },
         canActivate: [UserRouteAccessService],
@@ -62,7 +62,7 @@ export const courtLocationPopupRoute: Routes = [
         path: 'court-location/:id/edit',
         component: CourtLocationPopupComponent,
         data: {
-            authorities: ['ROLE_USER', 'ROLE_ADMIN'],
+            authorities: ['ROLE_USER', 'ROLE_ADMIN', 'ROLE_MANAGER'],
             pageTitle: 'CourtLocations'
         },
         canActivate: [UserRouteAccessService],
@@ -72,7 +72,7 @@ export const courtLocationPopupRoute: Routes = [
         path: 'court-location/:id/delete',
         component: CourtLocationDeletePopupComponent,
         data: {
-            authorities: ['ROLE_USER', 'ROLE_ADMIN'],
+            authorities: ['ROLE_USER', 'ROLE_ADMIN', 'ROLE_MANAGER'],
             pageTitle: 'CourtLocations'
         },
         canActivate: [UserRouteAccessService],
